@@ -1,14 +1,13 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
 
-public class TankDrive extends CommandBase{
-    
+public class TankDrive extends Command {
+
     private final DriveSubsystem m_driveSubsystem;
     private final DoubleSupplier m_leftStick;
     private final DoubleSupplier m_rightStick;
