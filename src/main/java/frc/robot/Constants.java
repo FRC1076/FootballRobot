@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final int kDriverControllerDeadband = 0;
+    public static final double kDriverControllerDeadband = 0.02;
     public static final boolean kDriverInvertedControls = true;
   }
 
@@ -39,8 +39,6 @@ public final class Constants {
 
     public static final int kGyroPort = 0;
     public static final boolean kGyroReversed = false;
-
-    public static final double kMaxSpeedMetersPerSecond = 1;
   }
   
 }

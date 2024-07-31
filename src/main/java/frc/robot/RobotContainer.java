@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.drivetrain.TankDrive;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 
@@ -51,7 +51,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
   }
 
   /**
