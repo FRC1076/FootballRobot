@@ -20,6 +20,8 @@ public class TankDrive extends Command {
 
     @Override
     public void initialize() {
+        //For testing only
+        //System.out.println("Tank Drive");
     }
 
     @Override
