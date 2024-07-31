@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -26,7 +27,9 @@ public class TankDrive extends Command {
 
     @Override
     public void execute() {
-        m_driveSubsystem.tankDrive(m_leftStick.getAsDouble(), m_rightStick.getAsDouble());
+        m_driveSubsystem.tankDrive(
+            m_leftStick.getAsDouble() * DriveConstants.kMaxSpeedMetersPerSecond, 
+            m_rightStick.getAsDouble() * DriveConstants.kMaxSpeedMetersPerSecond);
     }
 
     @Override

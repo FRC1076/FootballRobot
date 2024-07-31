@@ -18,6 +18,8 @@ public final class Constants {
     public static final int kDriverControllerDeadband = 0;
     public static final boolean kDriverInvertedControls = true;
   }
+
+  //For the time being, all of these values are placeholders
   public static class DriveConstants {
     public static final int kLeftFrontMotorPort = 1;
     public static final int kLeftBackMotorPort = 2;
@@ -37,6 +39,8 @@ public final class Constants {
 
     public static final int kGyroPort = 0;
     public static final boolean kGyroReversed = false;
+
+    public static final double kMaxSpeedMetersPerSecond = 1;
   }
   
 }
