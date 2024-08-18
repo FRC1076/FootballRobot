@@ -13,6 +13,12 @@ public class ShooterSystem extends SubsystemBase {
         m_leftShooterMotor = new CANSparkMax(ShooterConstants.kLeftShooterMotorID, CANSparkMax.MotorType.kBrushless);
         m_rightShooterMotor = new CANSparkMax(ShooterConstants.kRightShooterMotorID, CANSparkMax.MotorType.kBrushless);
     }
+    
+    public void startShooterMotor() {
+        m_leftShooterMotor.set(ShooterConstants.kLeftShooterMotorSpeed);
+        m_rightShooterMotor.set(ShooterConstants.kRightShooterMotorSpeed);
+    }
+    
 
     // This method will be called once per scheduler run
     @Override
