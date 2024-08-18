@@ -5,12 +5,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
-import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -31,13 +31,13 @@ public class DriveSubsystem extends SubsystemBase {
     private final Encoder m_leftEncoder;
     private final Encoder m_rightEncoder;
 
-    private final AnalogGyro m_gyro;
+    private final ADXRS450_Gyro m_gyro;
 
     private final DifferentialDriveOdometry m_odometry;
 
     private final EncoderSim m_leftEncoderSim;
     private final EncoderSim m_rightEncoderSim;
-    private final AnalogGyroSim m_gyroSim;
+    private final ADXRS450_GyroSim m_gyroSim;
 
     private final Field2d m_field;
 
@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightEncoder.setSamplesToAverage(DriveConstants.kEncoderSamples);
 
         //Gyro
-        m_gyro = new AnalogGyro(DriveConstants.kGyroPort);
+        m_gyro = new ADXRS450_Gyro();
         m_gyro.calibrate();
 
         //Odometry
@@ -82,12 +82,11 @@ public class DriveSubsystem extends SubsystemBase {
         //Simulation
         m_leftEncoderSim = new EncoderSim(m_leftEncoder);
         m_rightEncoderSim = new EncoderSim(m_rightEncoder);
-        m_gyroSim = new AnalogGyroSim(m_gyro);
+        m_gyroSim = new ADXRS450_GyroSim(m_gyro);
         m_driveSim = new DifferentialDrivetrainSim(
             DCMotor.getNEO(2),
             7.29,
-            7.5,
-            60, 
+            7.5,            60, 
             Units.inchesToMeters(3), 
             0.7112, 
             null); //Placeholder values
