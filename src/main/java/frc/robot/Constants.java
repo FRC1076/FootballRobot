@@ -38,5 +38,8 @@ public final class Constants {
     public static final int kGyroPort = 0;
     public static final boolean kGyroReversed = false;
   }
-  
+
+  public static class ShooterConstants {
+    public static final int kLeftShooterMotorID = 0;
+    public static final int kRightShooterMotorID = 0;
 }
