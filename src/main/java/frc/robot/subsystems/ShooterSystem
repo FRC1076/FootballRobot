@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ExampleSys extends SubsystemBase {
+public class ShooterSystem extends SubsystemBase {
 
     // Declare actuators, sensors, and other variables here
 
@@ -11,7 +11,7 @@ public class ExampleSys extends SubsystemBase {
      * 
      * <p>ExampleSys contains the basic framework of a robot subsystem for use in command-based programming.
      */
-    public ExampleSys() {
+    public ShooterSystem() {
         // Initialize and configure actuators and sensors here
     
     }
