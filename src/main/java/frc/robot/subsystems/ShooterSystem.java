@@ -14,7 +14,7 @@ public class ShooterSystem extends SubsystemBase {
         m_rightShooterMotor = new CANSparkMax(ShooterConstants.kRightShooterMotorID, CANSparkMax.MotorType.kBrushless);
     }
     
-    public void startShooterMotors(double leftMotorSpeed, double rightMotorSpeed) {
+    public void setShooterSpeed(double leftMotorSpeed, double rightMotorSpeed) {
         m_leftShooterMotor.set(leftMotorSpeed);
         m_rightShooterMotor.set(rightMotorSpeed);
     }

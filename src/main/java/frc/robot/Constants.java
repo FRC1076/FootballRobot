@@ -17,6 +17,11 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kDriverControllerDeadband = 0;
     public static final boolean kDriverInvertedControls = true;
+
+    public static final int kOperatorControllerPort = 1;
+    public static final int kOperatorControllerDeadband = 0;
+    public static final double kOperatorControllerTriggerThreshold = 0.7;
+    public static final boolean kOperatorInvertedControls = true;
   }
   public static class DriveConstants {
     public static final int kLeftFrontMotorPort = 1;
@@ -42,4 +47,10 @@ public final class Constants {
   public static class ShooterConstants {
     public static final int kLeftShooterMotorID = 0;
     public static final int kRightShooterMotorID = 0;
-}
+
+    public static final double kLeftShooterMotorSpeed = 1;
+    public static final double kRightShooterMotorSpeed = 0.5;
+  }
+  
+  }
+
