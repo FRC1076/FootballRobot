@@ -21,10 +21,10 @@ public final class Constants {
 
   //For the time being, all of these values are placeholders
   public static class DriveConstants {
-    public static final int kLeftFrontMotorPort = 1;
+    public static final int kLeftFrontMotorPort = 7;
     public static final int kLeftBackMotorPort = 2;
-    public static final int kRightFrontMotorPort = 3;
-    public static final int kRightBackMotorPort = 4;
+    public static final int kRightFrontMotorPort = 5;
+    public static final int kRightBackMotorPort = 3;
 
     public static final int kLeftFrontEncoderPort = 1;
     public static final int kLeftBackEncoderPort = 2;
