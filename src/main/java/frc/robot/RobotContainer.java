@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 
@@ -34,7 +34,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_robotDrive.setDefaultCommand(new TankDrive(
+    m_robotDrive.setDefaultCommand(new ArcadeDrive(
       () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
       () -> MathUtil.applyDeadband(m_driverController.getRightY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
       m_robotDrive
@@ -52,7 +52,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Toggles drive modes. (for testing only)
-    /* 
+    /*
     m_driverController.x().toggleOnTrue(new ArcadeDrive(
       () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
       () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
