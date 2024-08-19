@@ -6,16 +6,19 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private final PWMTalonSRX m_leftLeader;
-    private final PWMTalonSRX m_leftFollower;
-    private final PWMTalonSRX m_rightLeader;
-    private final PWMTalonSRX m_rightFollower;
+    private final WPI_TalonSRX m_leftLeader;
+    private final WPI_TalonSRX m_leftFollower;
+    private final WPI_TalonSRX m_rightLeader;
+    private final WPI_TalonSRX m_rightFollower;
+    private final MotorControllerGroup m_left;
+    private final MotorControllerGroup m_right;
 
     private final DifferentialDrive m_differentialDrive;
 
@@ -29,19 +32,18 @@ public class DriveSubsystem extends SubsystemBase {
     public DriveSubsystem() {
 
         //Motors
-        m_leftLeader = new PWMTalonSRX(DriveConstants.kLeftFrontMotorPort);
-        m_leftFollower = new PWMTalonSRX(DriveConstants.kLeftBackMotorPort);
-        m_rightLeader = new PWMTalonSRX(DriveConstants.kRightFrontMotorPort);
-        m_rightFollower = new PWMTalonSRX(DriveConstants.kRightBackMotorPort);
-
+        m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
+        m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);
+        m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
+        m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
+        m_left = new MotorControllerGroup(m_leftLeader, m_leftFollower);
+        m_right = new MotorControllerGroup(m_rightLeader, m_rightFollower);
         //Pairing motors
-        m_leftLeader.addFollower(m_leftFollower);
-        m_rightLeader.addFollower(m_rightFollower);
 
-        m_rightLeader.setInverted(true);
+        //m_rightLeader.setInverted(true);
 
         //Differential Drive
-        m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
+        m_differentialDrive = new DifferentialDrive(m_left,m_right);
 
         //Encoders
         m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);

@@ -35,9 +35,9 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_robotDrive.setDefaultCommand(new TankDrive(
+    m_robotDrive.setDefaultCommand(new ArcadeDrive(
       () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-      () -> MathUtil.applyDeadband(m_driverController.getRightY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+      () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
       m_robotDrive
     ));
   }
