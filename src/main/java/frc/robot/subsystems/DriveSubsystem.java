@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
@@ -20,10 +21,10 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private final PWMTalonSRX m_leftLeader;
-    private final PWMTalonSRX m_leftFollower;
-    private final PWMTalonSRX m_rightLeader;
-    private final PWMTalonSRX m_rightFollower;
+    private final WPI_TalonSRX m_leftLeader;
+    private final WPI_TalonSRX m_leftFollower;
+    private final WPI_TalonSRX m_rightLeader;
+    private final WPI_TalonSRX m_rightFollower;
 
     private final DifferentialDrive m_differentialDrive;
     private final DifferentialDrivetrainSim m_driveSim;
@@ -44,14 +45,14 @@ public class DriveSubsystem extends SubsystemBase {
     public DriveSubsystem() {
 
         //Motors
-        m_leftLeader = new PWMTalonSRX(DriveConstants.kLeftFrontMotorPort);
-        m_leftFollower = new PWMTalonSRX(DriveConstants.kLeftBackMotorPort);
-        m_rightLeader = new PWMTalonSRX(DriveConstants.kRightFrontMotorPort);
-        m_rightFollower = new PWMTalonSRX(DriveConstants.kRightBackMotorPort);
+        m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
+        m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);
+        m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
+        m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
 
         //Pairing motors
-        m_leftLeader.addFollower(m_leftFollower);
-        m_rightLeader.addFollower(m_rightFollower);
+        m_leftFollower.follow(m_leftLeader);
+        m_rightFollower.follow(m_rightLeader);
 
         m_rightLeader.setInverted(true);
 
