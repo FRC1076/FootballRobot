@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -25,6 +26,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final WPI_TalonSRX m_leftFollower;
     private final WPI_TalonSRX m_rightLeader;
     private final WPI_TalonSRX m_rightFollower;
+    private final MotorControllerGroup m_left;
+    private final MotorControllerGroup m_right;
 
     private final DifferentialDrive m_differentialDrive;
     private final DifferentialDrivetrainSim m_driveSim;
@@ -49,15 +52,13 @@ public class DriveSubsystem extends SubsystemBase {
         m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);
         m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
         m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
+        m_left = new MotorControllerGroup(m_leftLeader, m_leftFollower);
+        m_right = new MotorControllerGroup(m_rightLeader, m_rightFollower);
 
-        //Pairing motors
-        m_leftFollower.follow(m_leftLeader);
-        m_rightFollower.follow(m_rightLeader);
-
-        m_rightLeader.setInverted(true);
+        //m_rightLeader.setInverted(true);
 
         //Differential Drive
-        m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
+        m_differentialDrive = new DifferentialDrive(m_left,m_right);
 
         //Encoders
         m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
@@ -98,7 +99,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void arcadeDrive(double moveSpeed, double turnSpeed){
-        m_differentialDrive.arcadeDrive(moveSpeed, turnSpeed);
+        m_differentialDrive.arcadeDrive(-turnSpeed, moveSpeed);
     }
 
     public void resetEncoders(){
