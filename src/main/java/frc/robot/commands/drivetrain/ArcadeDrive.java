@@ -3,6 +3,7 @@ package frc.robot.commands.drivetrain;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class ArcadeDrive extends Command {
@@ -10,7 +11,7 @@ public class ArcadeDrive extends Command {
     private final DoubleSupplier m_speedStick;
     private final DoubleSupplier m_turnStick;
 
-    public ArcadeDrive(DoubleSupplier speedStick, DoubleSupplier turnStick, DriveSubsystem subsystem){
+    public ArcadeDrive(DoubleSupplier speedStick, DoubleSupplier turnStick, DriveSubsystem subsystem) {
         m_driveSubsystem = subsystem;
         m_speedStick = speedStick;
         m_turnStick = turnStick;
@@ -26,17 +27,17 @@ public class ArcadeDrive extends Command {
     @Override
     public void execute() {
         m_driveSubsystem.arcadeDrive(
-            m_speedStick.getAsDouble(), 
-            m_turnStick.getAsDouble());
+            m_speedStick.getAsDouble() * DriveConstants.speedLimiter, 
+            m_turnStick.getAsDouble() * DriveConstants.turnRateLimiter);
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void end(boolean interrupted) {
 
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
 }
