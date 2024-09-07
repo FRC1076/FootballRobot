@@ -43,7 +43,7 @@ public final class Constants {
     public static final double speedLimiter = 1.0; //Speed limiter, to keep robot from tipping over (DEPRECATED, replaced by acceleration limiter)
     public static final double turnRateLimiter = 1.0; //Turn rate limiter, to keep robot from tipping over (DEPRECATED, replaced by acceleration limiter)
 
-    public static final double accelerationLimiter = 1.5; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
+    public static final double accelerationLimiter = 0.80; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
   }
   
 }
