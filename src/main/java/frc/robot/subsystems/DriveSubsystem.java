@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
@@ -50,14 +53,28 @@ public class DriveSubsystem extends SubsystemBase {
         //Motors
         m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
         m_leftLeader.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_leftLeader.setNeutralMode(NeutralMode.Brake);
+
         m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);
         m_leftFollower.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_leftFollower.setNeutralMode(NeutralMode.Brake);
+
         m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
         m_rightLeader.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_rightLeader.setNeutralMode(NeutralMode.Brake);
+
         m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
         m_rightFollower.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_rightFollower.setNeutralMode(NeutralMode.Brake);
+
+        /*
+        m_leftFollower.follow(m_leftLeader);
+        m_rightFollower.follow(m_rightLeader);
+        */
+
         m_left = new MotorControllerGroup(m_leftLeader, m_leftFollower);
         m_right = new MotorControllerGroup(m_rightLeader, m_rightFollower);
+        
 
         //m_rightLeader.setInverted(true);
 
