@@ -45,5 +45,13 @@ public final class Constants {
 
     public static final double accelerationLimiter = 0.80; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
   }
+
+  public static class ShooterConstants {
+    public static final int kLeftShooterMotorID = 0;
+    public static final int kRightShooterMotorID = 0;
+
+    public static final double kLeftShooterMotorSpeed = 1;
+    public static final double kRightShooterMotorSpeed = 0.5;
+  }
   
 }
