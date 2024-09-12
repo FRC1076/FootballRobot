@@ -52,19 +52,19 @@ public class DriveSubsystem extends SubsystemBase {
 
         //Motors
         m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
-        m_leftLeader.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_leftLeader.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_leftLeader.setNeutralMode(NeutralMode.Brake);
 
         m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);
-        m_leftFollower.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_leftFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_leftFollower.setNeutralMode(NeutralMode.Brake);
 
         m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
-        m_rightLeader.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_rightLeader.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_rightLeader.setNeutralMode(NeutralMode.Brake);
 
         m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
-        m_rightFollower.configOpenloopRamp(DriveConstants.accelerationLimiter);
+        m_rightFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_rightFollower.setNeutralMode(NeutralMode.Brake);
 
         /*

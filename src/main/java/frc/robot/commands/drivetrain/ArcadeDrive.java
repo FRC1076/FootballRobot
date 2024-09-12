@@ -27,8 +27,8 @@ public class ArcadeDrive extends Command {
     @Override
     public void execute() {
         m_driveSubsystem.arcadeDrive(
-            m_speedStick.getAsDouble() * DriveConstants.speedLimiter, 
-            m_turnStick.getAsDouble() * DriveConstants.turnRateLimiter);
+            m_speedStick.getAsDouble() * DriveConstants.kSpeedLimiter, 
+            m_turnStick.getAsDouble() * DriveConstants.kTurnRateLimiter);
     }
 
     @Override

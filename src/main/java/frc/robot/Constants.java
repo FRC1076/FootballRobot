@@ -40,18 +40,21 @@ public final class Constants {
     public static final int kGyroPort = 0;
     public static final boolean kGyroReversed = false;
 
-    public static final double speedLimiter = 1.0; //Speed limiter, to keep robot from tipping over
-    public static final double turnRateLimiter = 1.0; //Turn rate limiter, to keep robot from tipping over
+    public static final double kSpeedLimiter = 1.0; //Speed limiter, to keep robot from tipping over
+    public static final double kTurnRateLimiter = 1.0; //Turn rate limiter, to keep robot from tipping over
 
-    public static final double accelerationLimiter = 0.80; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
+    public static final double kAccelerationLimiter = 0.80; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
   }
 
   public static class ShooterConstants {
-    public static final int kLeftShooterMotorID = 0;
-    public static final int kRightShooterMotorID = 0;
+    public static final int kLeftShooterMotorID = 1;
+    public static final int kRightShooterMotorID = 9;
 
     public static final double kLeftMotorSpeedScalar = 1;
     public static final double kRightMotorSpeedScalar = 0.5;
+
+    public static final boolean kLeftInverted = false;
+    public static final boolean kRightInverted = false;
   }
   
 }

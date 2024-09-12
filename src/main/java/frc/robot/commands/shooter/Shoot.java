@@ -10,22 +10,21 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class Shoot extends Command {
 
     private final ShooterSubsystem m_ShooterSubsystem;
-    private final DoubleSupplier speedSupplier;
+    private final double speed;
 
-    public Shoot(DoubleSupplier _speedSupplier, ShooterSubsystem subsystem){
-        m_ShooterSubsystem = subsystem;
-        speedSupplier = _speedSupplier;
+    public Shoot(double _speed, ShooterSubsystem ShooterSubsystem){
+        m_ShooterSubsystem = ShooterSubsystem;
+        speed = _speed;
         addRequirements(m_ShooterSubsystem);
     }
 
     @Override
     public void initialize(){
-        m_ShooterSubsystem.setShooterSpeed(speedSupplier.getAsDouble() * ShooterConstants.kLeftMotorSpeedScalar,speedSupplier.getAsDouble() * ShooterConstants.kRightMotorSpeedScalar);
+        m_ShooterSubsystem.setShooterSpeed(speed * ShooterConstants.kLeftMotorSpeedScalar,speed * ShooterConstants.kRightMotorSpeedScalar);
     }
 
     @Override
-    public void execute(){
-    }
+    public void execute(){}
 
     @Override
     public void end(boolean interrupted){
