@@ -127,6 +127,15 @@ public class RobotContainer {
             () -> IndexMotor.set(1.0),
             () -> IndexMotor.stopMotor()
         ));
+        
+        //For testing
+        /*
+        m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
+            () -> System.out.println("Beep"),
+            () -> System.out.println("Boop")
+        ));
+        */
+
         //Toggles drive modes. (for testing only)
         /*
         m_driverController.x().toggleOnTrue(new ArcadeDrive(
