@@ -18,7 +18,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.drivetrain.ReducedDrive;
@@ -84,10 +88,15 @@ public class RobotContainer {
         }
     }
 
+    //Indexer motor
+
+    private final PWMTalonSRX IndexMotor = new PWMTalonSRX(ShooterConstants.kIndexerMotorID);
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
         driveModeChooser.addOption("Reduced Drive","Reduced");
+
         // Configure the trigger bindings
         configureBindings();
 
@@ -112,6 +121,12 @@ public class RobotContainer {
         m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
             () -> shooterSpeed.getDouble(0.0), 
             m_ShooterSubsystem));
+        
+        //Configures Indexer Command
+        m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
+            () -> IndexMotor.set(1.0),
+            () -> IndexMotor.stopMotor()
+        ));
         //Toggles drive modes. (for testing only)
         /*
         m_driverController.x().toggleOnTrue(new ArcadeDrive(

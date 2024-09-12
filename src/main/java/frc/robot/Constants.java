@@ -50,14 +50,16 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final int kLeftShooterMotorID = 1;
-    public static final int kRightShooterMotorID = 9;
+    public static final int kLeftShooterMotorID = 1; //Placeholder
+    public static final int kRightShooterMotorID = 9; //Placeholder
 
     public static final double kLeftMotorSpeedScalar = 1.0;
     public static final double kRightMotorSpeedScalar = 0.5;
 
     public static final boolean kLeftInverted = false;
     public static final boolean kRightInverted = false;
+
+    public static final int kIndexerMotorID = 3; //Placeholder
   }
   
 }
