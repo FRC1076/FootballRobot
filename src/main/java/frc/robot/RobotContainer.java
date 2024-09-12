@@ -52,7 +52,7 @@ public class RobotContainer {
     //Drivetrain controls
     private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
     private final ComplexWidget driveCommand = this.ControlTab
-        .add("Drive Mode",driveModeChooser)
+        .add("Drive Mode (Press A to confirm change)",driveModeChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
 
