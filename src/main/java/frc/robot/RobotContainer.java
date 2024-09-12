@@ -6,20 +6,14 @@ package frc.robot;
 
 import java.util.Map;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drivetrain.ArcadeDrive;
@@ -44,8 +38,8 @@ public class RobotContainer {
     private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
     //Shuffleboard
-    private final ShuffleboardTab SmartDashboard = Shuffleboard.getTab("SmartDashboard");
-    private final GenericEntry shooterSpeed = this.SmartDashboard
+    private final ShuffleboardTab ControlTab = Shuffleboard.getTab("Control");
+    private final GenericEntry shooterSpeed = this.ControlTab
         .add("Shooter Speed",1)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min",0,"max",1))
