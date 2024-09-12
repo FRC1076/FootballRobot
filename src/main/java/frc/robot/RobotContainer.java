@@ -8,15 +8,20 @@ import java.util.Map;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.drivetrain.ReducedDrive;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -30,7 +35,6 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class RobotContainer {
 
-    record SpeedWrapper (double speed) {}; //SendableChooser requires a reference, so a simple wrapper class is needed
 
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -45,12 +49,41 @@ public class RobotContainer {
         .withProperties(Map.of("min",0,"max",1))
         .getEntry();
 
+    //Drivetrain controls
+    private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
+    private final ComplexWidget driveCommand = this.ControlTab
+        .add("Drive Mode",driveModeChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withSize(2,1);
+
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
         new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+    //Runnable for changing the Drive mode
+    private class changeDriveMode implements Runnable {
+        @Override
+        public void run(){
+            switch (driveModeChooser.getSelected()){
+                case "Arcade" -> CommandScheduler.getInstance().schedule(
+                    new ArcadeDrive(
+                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        m_robotDrive)
+                    );
+                case "Reduced" -> CommandScheduler.getInstance().schedule(
+                    new ReducedDrive(
+                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband), 
+                        m_robotDrive)
+                    );
+            }
+        }
+    }
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
+        driveModeChooser.addOption("Reduced Drive","Reduced");
         // Configure the trigger bindings
         configureBindings();
 
@@ -72,7 +105,7 @@ public class RobotContainer {
     */
     private void configureBindings() {
         //Configures shooter command
-        m_driverController.rightTrigger().whileTrue(new Shoot(
+        m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
             () -> shooterSpeed.getDouble(0.0), 
             m_ShooterSubsystem));
         //Toggles drive modes. (for testing only)
@@ -84,6 +117,7 @@ public class RobotContainer {
         ));
     */
 
+        m_driverController.a().onTrue(new InstantCommand(new changeDriveMode()));
     /*
     //Toggles reduced drive mode (for testing only)
     m_driverController.x().toggleOnTrue(new ReducedDrive(

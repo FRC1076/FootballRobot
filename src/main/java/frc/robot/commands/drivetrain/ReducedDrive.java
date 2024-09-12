@@ -20,7 +20,7 @@ public class ReducedDrive extends Command {
     @Override
     public void initialize() {
         //For testing only
-        //System.out.println("Arcade Drive");
+        System.out.println("Reduced Drive");
     }
 
     @Override

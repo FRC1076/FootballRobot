@@ -64,6 +64,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Control/Drive Mode": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
