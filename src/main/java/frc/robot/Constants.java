@@ -50,7 +50,7 @@ public final class Constants {
     public static final int kLeftShooterMotorID = 1;
     public static final int kRightShooterMotorID = 9;
 
-    public static final double kLeftMotorSpeedScalar = 1;
+    public static final double kLeftMotorSpeedScalar = 1.0;
     public static final double kRightMotorSpeedScalar = 0.5;
 
     public static final boolean kLeftInverted = false;

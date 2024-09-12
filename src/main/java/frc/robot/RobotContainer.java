@@ -72,7 +72,9 @@ public class RobotContainer {
     */
     private void configureBindings() {
         //Configures shooter command
-        m_driverController.leftTrigger(0.5).whileTrue(new Shoot(shooterSpeed.getDouble(0.0), m_ShooterSubsystem));
+        m_driverController.rightTrigger().whileTrue(new Shoot(
+            () -> shooterSpeed.getDouble(0.0), 
+            m_ShooterSubsystem));
         //Toggles drive modes. (for testing only)
         /*
         m_driverController.x().toggleOnTrue(new ArcadeDrive(

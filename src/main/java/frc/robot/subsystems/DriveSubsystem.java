@@ -29,8 +29,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final WPI_TalonSRX m_leftFollower;
     private final WPI_TalonSRX m_rightLeader;
     private final WPI_TalonSRX m_rightFollower;
-    private final MotorControllerGroup m_left;
-    private final MotorControllerGroup m_right;
+    //private final MotorControllerGroup m_left;
+    //private final MotorControllerGroup m_right;
 
     private final DifferentialDrive m_differentialDrive;
     private final DifferentialDrivetrainSim m_driveSim;
@@ -67,19 +67,19 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_rightFollower.setNeutralMode(NeutralMode.Brake);
 
-        /*
+        
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
-        */
-
+        
+        /*
         m_left = new MotorControllerGroup(m_leftLeader, m_leftFollower);
         m_right = new MotorControllerGroup(m_rightLeader, m_rightFollower);
-        
+        */
 
-        //m_rightLeader.setInverted(true);
+        m_rightLeader.setInverted(true);
 
         //Differential Drive
-        m_differentialDrive = new DifferentialDrive(m_left,m_right);
+        m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
 
         //Encoders
         m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
@@ -120,7 +120,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void arcadeDrive(double moveSpeed, double turnSpeed){
-        m_differentialDrive.arcadeDrive(-turnSpeed, moveSpeed);
+        m_differentialDrive.arcadeDrive(moveSpeed, turnSpeed);
     }
 
     public void resetEncoders(){

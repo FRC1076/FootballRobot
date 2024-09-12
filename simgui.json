@@ -26,7 +26,22 @@
       }
     },
     "Other Devices": {
+      "ADXRS450[0]": {
+        "header": {
+          "open": true
+        }
+      },
       "AnalogGyro[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [9]": {
         "header": {
           "open": true
         }
@@ -94,12 +109,6 @@
       "open": true
     },
     "Server": {
-      "Publishers": {
-        "open": true
-      },
-      "Subscribers": {
-        "open": true
-      },
       "open": true
     },
     "visible": true
