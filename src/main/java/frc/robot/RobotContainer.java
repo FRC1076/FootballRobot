@@ -59,6 +59,9 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
         new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    
+    private final CommandXboxController m_reducedController = 
+        new CommandXboxController(OperatorConstants.kReducedControllerPort);
 
     //Runnable for changing the Drive mode
     private class changeDriveMode implements Runnable {
@@ -72,8 +75,9 @@ public class RobotContainer {
                         m_robotDrive)
                     );
                 case "Reduced" -> CommandScheduler.getInstance().schedule(
-                    new ReducedDrive(
-                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband), 
+                    new ArcadeDrive(
+                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         m_robotDrive)
                     );
             }

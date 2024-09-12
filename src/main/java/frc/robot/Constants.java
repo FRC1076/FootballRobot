@@ -17,6 +17,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverControllerDeadband = 0.1;
     public static final boolean kDriverInvertedControls = true;
+
+    public static final int kReducedControllerPort = 1;
+    public static final double kReducedSpeedScalar = 0.2; //Speed scalar for when the robot is operating in reduced control mode. 0.3, for example, reduces all controller inputs to 30%
   }
 
   //For the time being, all of these values are placeholders

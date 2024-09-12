@@ -65,6 +65,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Control/Drive Mode": "String Chooser",
+      "/Shuffleboard/Control/Drive Mode (Press A to confirm change)": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
