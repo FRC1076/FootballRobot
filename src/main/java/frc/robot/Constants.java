@@ -16,7 +16,8 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverControllerDeadband = 0.1;
-    public static final boolean kDriverInvertedControls = true;
+    public static final boolean kDriverInvertedDriveControls = false;
+    public static final boolean kDriverInvertedTurnControls = true;
 
     public static final int kReducedControllerPort = 1;
     public static final double kReducedSpeedScalar = 0.2; //Speed scalar for when the robot is operating in reduced control mode. 0.3, for example, reduces all controller inputs to 30%
@@ -50,8 +51,8 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final int kLeftShooterMotorID = 1; //Placeholder
-    public static final int kRightShooterMotorID = 9; //Placeholder
+    public static final int kLeftShooterMotorID = 6; //Placeholder
+    public static final int kRightShooterMotorID = 1; //Placeholder
 
     public static final double kLeftMotorSpeedScalar = 1.0;
     public static final double kRightMotorSpeedScalar = 0.5;

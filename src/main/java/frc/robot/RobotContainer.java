@@ -74,14 +74,14 @@ public class RobotContainer {
             switch (driveModeChooser.getSelected()){
                 case "Arcade" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
-                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         m_robotDrive)
                     );
                 case "Reduced" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
-                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         m_robotDrive)
                     );
             }
@@ -101,8 +101,8 @@ public class RobotContainer {
         configureBindings();
 
         m_robotDrive.setDefaultCommand(new ArcadeDrive(
-            () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
             m_robotDrive
         ));
     }
