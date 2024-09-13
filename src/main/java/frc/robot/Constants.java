@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kLeftMotorSpeedScalar = 1.0;
     public static final double kRightMotorSpeedScalar = 0.5;
 
-    public static final boolean kLeftInverted = false;
+    public static final boolean kLeftInverted = true;
     public static final boolean kRightInverted = false;
 
     public static final int kIndexerMotorID = 3; //Placeholder

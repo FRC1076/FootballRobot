@@ -84,6 +84,12 @@ public class RobotContainer {
                         () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         m_robotDrive)
                     );
+                case "Disabled" -> CommandScheduler.getInstance().schedule(
+                    new ArcadeDrive(
+                        () -> 0.0, 
+                        () -> 0.0, 
+                        m_robotDrive)
+                );
             }
         }
     }
@@ -96,6 +102,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
         driveModeChooser.addOption("Reduced Drive","Reduced");
+        driveModeChooser.addOption("Drive Disabled (Shooting)", "Disabled");//For when we don't have an indexer
 
         // Configure the trigger bindings
         configureBindings();
@@ -118,15 +125,16 @@ public class RobotContainer {
     */
     private void configureBindings() {
         //Configures shooter command
-        /*
+        
         m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
             () -> shooterSpeed.getDouble(0.5), 
-            m_ShooterSubsystem));*/
+            m_ShooterSubsystem));
         
+            /*
         m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
             () -> 0.5, 
             m_ShooterSubsystem));
-        
+        */
         //Configures Indexer Command
         m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
             () -> IndexMotor.set(1.0),
