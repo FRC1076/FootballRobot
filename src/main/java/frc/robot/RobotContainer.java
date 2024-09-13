@@ -118,8 +118,13 @@ public class RobotContainer {
     */
     private void configureBindings() {
         //Configures shooter command
+        /*
         m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
-            () -> shooterSpeed.getDouble(0.0), 
+            () -> shooterSpeed.getDouble(0.5), 
+            m_ShooterSubsystem));*/
+        
+        m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
+            () -> 0.5, 
             m_ShooterSubsystem));
         
         //Configures Indexer Command
