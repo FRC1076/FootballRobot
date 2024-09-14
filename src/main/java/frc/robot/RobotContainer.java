@@ -47,8 +47,22 @@ public class RobotContainer {
 
     //Shuffleboard
     private final ShuffleboardTab ControlTab = Shuffleboard.getTab("Control");
+
+    //Controls Shooter Speed
     private final GenericEntry shooterSpeed = this.ControlTab
         .add("Shooter Speed",1)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min",0,"max",1))
+        .getEntry();
+
+    private final GenericEntry driveSpeed = this.ControlTab
+        .add("Drive Speed Limit",1)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min",0,"max",1))
+        .getEntry();
+
+    private final GenericEntry turnSpeed = this.ControlTab
+        .add("Turn Speed Limit",1)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min",0,"max",1))
         .getEntry();
@@ -76,18 +90,21 @@ public class RobotContainer {
                     new ArcadeDrive(
                         () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        "Initializing Arcade Drive",
                         m_robotDrive)
                     );
                 case "Reduced" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
                         () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        "Initializing Reduced Drive",
                         m_robotDrive)
-                    );
+                    ); //WIP, Do not use
                 case "Disabled" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
                         () -> 0.0, 
                         () -> 0.0, 
+                        "Disabling Drive",
                         m_robotDrive)
                 );
             }
@@ -101,15 +118,15 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
-        driveModeChooser.addOption("Reduced Drive","Reduced");
+        driveModeChooser.addOption("Reduced Drive (WIP)","Reduced");
         driveModeChooser.addOption("Drive Disabled (Shooting)", "Disabled");//For when we don't have an indexer
 
         // Configure the trigger bindings
         configureBindings();
 
         m_robotDrive.setDefaultCommand(new ArcadeDrive(
-            () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
             m_robotDrive
         ));
     }

@@ -17,8 +17,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public void setShooterSpeed(double leftMotorSpeed, double rightMotorSpeed) {
-        m_leftShooterMotor.set(leftMotorSpeed); //For Debugging
-        m_rightShooterMotor.set(rightMotorSpeed); //For Debugging
+        m_leftShooterMotor.set(leftMotorSpeed);
+        m_rightShooterMotor.set(rightMotorSpeed); 
     }
 
     /**
@@ -48,7 +48,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     @Override
     public void periodic() {
-        //System.out.println(getLeftPower() + " " + getRightPower());
+        //System.out.println(getLeftPower() + " " + getRightPower());//For debugging
     }
 
     // Put methods for controlling this subsystem here. Call these from Commands.
