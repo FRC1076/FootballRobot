@@ -88,15 +88,15 @@ public class RobotContainer {
             switch (driveModeChooser.getSelected()){
                 case "Arcade" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
-                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         "Initializing Arcade Drive",
                         m_robotDrive)
                     );
                 case "Reversed" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
-                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
-                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
+                        () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
                         "Initializing Reversed Drive",
                         m_robotDrive)
                     );
