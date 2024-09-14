@@ -44,8 +44,8 @@ public final class Constants {
     public static final int kGyroPort = 0;
     public static final boolean kGyroReversed = false;
 
-    public static final double kSpeedLimiter = 0.8; //Speed limiter, to keep robot from tipping over
-    public static final double kTurnRateLimiter = 0.8; //Turn rate limiter, to keep robot from tipping over
+    public static final double kClutchSpeed = 0.4; //Speed limiter for clutch
+    public static final double kClutchTurn = 0.4; //Turn rate limiter for clutch
 
     public static final double kAccelerationLimiter = 0.00; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
   }

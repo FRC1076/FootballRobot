@@ -55,6 +55,7 @@ public class RobotContainer {
         .withProperties(Map.of("min",0,"max",1))
         .getEntry();
 
+    //Controls drivetrain
     private final GenericEntry driveSpeed = this.ControlTab
         .add("Drive Speed Limit",1)
         .withWidget(BuiltInWidgets.kNumberSlider)
@@ -67,12 +68,19 @@ public class RobotContainer {
         .withProperties(Map.of("min",0,"max",1))
         .getEntry();
 
-    //Drivetrain controls
+    private final GenericEntry driveReversed = this.ControlTab
+        .add("Drive Reversed",false)
+        .withWidget(BuiltInWidgets.kToggleSwitch)
+        .getEntry();
+
     private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
     private final ComplexWidget driveCommand = this.ControlTab
         .add("Drive Mode (Press A to confirm change)",driveModeChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
+
+    
+    private boolean reversedDrive = false;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
@@ -90,21 +98,21 @@ public class RobotContainer {
      */
     private ArcadeDrive ArcadeDriveConstructor(){
         return new ArcadeDrive(
-            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
             () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            "Initializing Arcade Drive",
+            "Drive Subsystem: Initializing Arcade Drive",
             m_robotDrive);
     }
 
     /**
-     * Constructor for Reversed Drive
-     * @return a new ArcadeDrive() object, configured normally, except the left stick inputs are reversed
+     * Constructor for clutched drive
+     * @return a new ArcadeDrive() object, with all inputs reduced
      */
-    private ArcadeDrive ReversedDriveConstructor(){
+    private ArcadeDrive ClutchDriveConstructor(){
         return new ArcadeDrive(
-            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
-            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            "Initializing Reversed Drive",
+            () -> driveSpeed.getDouble(1.0) * Constants.DriveConstants.kClutchSpeed * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * Constants.DriveConstants.kClutchTurn * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            "Drive Subsystem: Initializing Clutch Drive",
             m_robotDrive);
     }
 
@@ -116,7 +124,7 @@ public class RobotContainer {
         return new ArcadeDrive(
             () -> 0,
             () -> 0,
-            "Disabling Drive",
+            "Drive Subsystem: Disabling Drive",
             m_robotDrive);
     }
 
@@ -126,7 +134,7 @@ public class RobotContainer {
         public void run(){
             switch (driveModeChooser.getSelected()){
                 case "Arcade" -> CommandScheduler.getInstance().schedule(ArcadeDriveConstructor());
-                case "Reversed" -> CommandScheduler.getInstance().schedule(ReversedDriveConstructor());
+                case "Clutch" -> CommandScheduler.getInstance().schedule(ClutchDriveConstructor());
                 case "Reduced" -> System.out.println("Reduced Drive is currently WIP. Please do not use it.");
                 case "Disabled" -> CommandScheduler.getInstance().schedule(DisabledDriveConstructor());
             }
@@ -140,7 +148,7 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
-        driveModeChooser.addOption("Reversed Arcade Drive","Reversed");
+        driveModeChooser.addOption("Clutched Drive","Clutch");
         driveModeChooser.addOption("Reduced Drive (WIP)","Reduced");
         driveModeChooser.addOption("Drive Disabled", "Disabled");//For when we don't have an indexer
 
@@ -169,45 +177,22 @@ public class RobotContainer {
             )
             .raceWith(DisabledDriveConstructor())
         );
-
-        m_driverController.rightTrigger(0.5).onFalse(new InstantCommand(new changeDriveMode()));
         
-            /*
-        m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
-            () -> 0.5, 
-            m_ShooterSubsystem));
-        */
         //Configures Indexer Command
         m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
             () -> IndexMotor.set(1.0),
             () -> IndexMotor.stopMotor()
         ));
         
-        //For testing
-        /*
-        m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
-            () -> System.out.println("Beep"),
-            () -> System.out.println("Boop")
-        ));
-        */
-
-        //Toggles drive modes. (for testing only)
-        /*
-        m_driverController.x().toggleOnTrue(new ArcadeDrive(
-            () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            m_robotDrive
-        ));
-    */
-
         m_driverController.a().onTrue(new InstantCommand(new changeDriveMode()));
-    /*
-    //Toggles reduced drive mode (for testing only)
-    m_driverController.x().toggleOnTrue(new ReducedDrive(
-        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-        m_robotDrive
-    ));
-    */
+
+        //Configures Clutch binding (LB + RB)
+        m_driverController.leftBumper()
+            .and(m_driverController.rightBumper())
+            .whileTrue(ClutchDriveConstructor());
+
+        //Configures emergency brake (b button)
+        m_driverController.b().whileTrue(DisabledDriveConstructor());
     }
 
     private void configureShuffleboard() {
