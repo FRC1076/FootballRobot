@@ -93,6 +93,13 @@ public class RobotContainer {
                         "Initializing Arcade Drive",
                         m_robotDrive)
                     );
+                case "Reversed" -> CommandScheduler.getInstance().schedule(
+                    new ArcadeDrive(
+                        () -> MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
+                        () -> MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+                        "Initializing Reversed Drive",
+                        m_robotDrive)
+                    );
                 case "Reduced" -> CommandScheduler.getInstance().schedule(
                     new ArcadeDrive(
                         () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
@@ -106,7 +113,7 @@ public class RobotContainer {
                         () -> 0.0, 
                         "Disabling Drive",
                         m_robotDrive)
-                );
+                    );
             }
         }
     }
@@ -118,6 +125,7 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
+        driveModeChooser.addOption("Reversed Arcade Drive","Reversed");
         driveModeChooser.addOption("Reduced Drive (WIP)","Reduced");
         driveModeChooser.addOption("Drive Disabled (Shooting)", "Disabled");//For when we don't have an indexer
 
