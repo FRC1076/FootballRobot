@@ -81,39 +81,54 @@ public class RobotContainer {
     private final CommandXboxController m_reducedController = 
         new CommandXboxController(OperatorConstants.kReducedControllerPort);
 
+    
+    //Constructors for Drive Modes
+
+    /**
+     * Constructor for Arcade Drive
+     * @return a new ArcadeDrive() object, configured to act as a normal arcade drive
+     */
+    private ArcadeDrive ArcadeDriveConstructor(){
+        return new ArcadeDrive(
+            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            "Initializing Arcade Drive",
+            m_robotDrive);
+    }
+
+    /**
+     * Constructor for Reversed Drive
+     * @return a new ArcadeDrive() object, configured normally, except the left stick inputs are reversed
+     */
+    private ArcadeDrive ReversedDriveConstructor(){
+        return new ArcadeDrive(
+            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            "Initializing Reversed Drive",
+            m_robotDrive);
+    }
+
+    /**
+     * Constructor for Disabled Drive
+     * @return a new ArcadeDrive() object, configured with all inputs set to 0, effectively disabling the drive
+     */
+    private ArcadeDrive DisabledDriveConstructor(){
+        return new ArcadeDrive(
+            () -> 0,
+            () -> 0,
+            "Disabling Drive",
+            m_robotDrive);
+    }
+
     //Runnable for changing the Drive mode
     private class changeDriveMode implements Runnable {
         @Override
         public void run(){
             switch (driveModeChooser.getSelected()){
-                case "Arcade" -> CommandScheduler.getInstance().schedule(
-                    new ArcadeDrive(
-                        () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        "Initializing Arcade Drive",
-                        m_robotDrive)
-                    );
-                case "Reversed" -> CommandScheduler.getInstance().schedule(
-                    new ArcadeDrive(
-                        () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? 1 : -1), OperatorConstants.kDriverControllerDeadband),
-                        () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        "Initializing Reversed Drive",
-                        m_robotDrive)
-                    );
-                case "Reduced" -> CommandScheduler.getInstance().schedule(
-                    new ArcadeDrive(
-                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        () -> OperatorConstants.kReducedSpeedScalar * MathUtil.applyDeadband(m_reducedController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-                        "Initializing Reduced Drive",
-                        m_robotDrive)
-                    ); //WIP, Do not use
-                case "Disabled" -> CommandScheduler.getInstance().schedule(
-                    new ArcadeDrive(
-                        () -> 0.0, 
-                        () -> 0.0, 
-                        "Disabling Drive",
-                        m_robotDrive)
-                    );
+                case "Arcade" -> CommandScheduler.getInstance().schedule(ArcadeDriveConstructor());
+                case "Reversed" -> CommandScheduler.getInstance().schedule(ReversedDriveConstructor());
+                case "Reduced" -> System.out.println("Reduced Drive is currently WIP. Please do not use it.");
+                case "Disabled" -> CommandScheduler.getInstance().schedule(DisabledDriveConstructor());
             }
         }
     }
@@ -127,16 +142,12 @@ public class RobotContainer {
         driveModeChooser.setDefaultOption("Arcade Drive","Arcade");
         driveModeChooser.addOption("Reversed Arcade Drive","Reversed");
         driveModeChooser.addOption("Reduced Drive (WIP)","Reduced");
-        driveModeChooser.addOption("Drive Disabled (Shooting)", "Disabled");//For when we don't have an indexer
+        driveModeChooser.addOption("Drive Disabled", "Disabled");//For when we don't have an indexer
 
         // Configure the trigger bindings
         configureBindings();
 
-        m_robotDrive.setDefaultCommand(new ArcadeDrive(
-            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (OperatorConstants.kDriverInvertedDriveControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            m_robotDrive
-        ));
+        m_robotDrive.setDefaultCommand(ArcadeDriveConstructor());
     }
 
     /**
@@ -150,10 +161,16 @@ public class RobotContainer {
     */
     private void configureBindings() {
         //Configures shooter command
-        
-        m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
-            () -> shooterSpeed.getDouble(0.5), 
-            m_ShooterSubsystem));
+        //Also automatically disables drivetrain when shooting
+        m_driverController.rightTrigger(0.5).whileTrue(
+            new Shoot(
+                () -> shooterSpeed.getDouble(0.5), 
+                m_ShooterSubsystem
+            )
+            .raceWith(DisabledDriveConstructor())
+        );
+
+        m_driverController.rightTrigger(0.5).onFalse(new InstantCommand(new changeDriveMode()));
         
             /*
         m_driverController.rightTrigger(0.5).whileTrue(new Shoot(
