@@ -61,6 +61,12 @@ public final class Constants {
     public static final boolean kRightInverted = false;
 
     public static final int kIndexerMotorID = 3; //Placeholder
+
+    public static class Electrical {
+        public final double kCurrentLimit = 40; //Current limit in amperes
+        public final double kCurrentThreshold = 60; //The threshold at which the current limit is activated
+        public final double kCurrentLimitTriggerTime = 
+    }
   }
   
 }

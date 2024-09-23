@@ -68,15 +68,12 @@ public class DriveSubsystem extends SubsystemBase {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
 
-        addChild("Left Leader",m_leftLeader);
-        addChild("Right Leader",m_rightLeader);
-
         m_rightLeader.setInverted(true);
 
         //Differential Drive
         m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
         addChild("Drivetrain", m_differentialDrive);
-        
+
         //Encoders
         m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
         m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
