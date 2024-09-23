@@ -48,7 +48,6 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     @Override
     public void periodic() {
-        //System.out.println(getLeftPower() + " " + getRightPower());//For debugging
     }
 
     // Put methods for controlling this subsystem here. Call these from Commands.

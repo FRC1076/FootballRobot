@@ -70,11 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
         
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
-        
-        /*
-        m_left = new MotorControllerGroup(m_leftLeader, m_leftFollower);
-        m_right = new MotorControllerGroup(m_rightLeader, m_rightFollower);
-        */
 
         m_rightLeader.setInverted(true);
 

@@ -8,25 +8,24 @@ import java.util.Map;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drivetrain.ArcadeDrive;
-import frc.robot.commands.drivetrain.ReducedDrive;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.subsystems.Clacks;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -54,6 +53,8 @@ public class RobotContainer {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min",0,"max",1))
         .getEntry();
+    
+    private final Clacks m_Trunk = new Clacks();
 
     //Controls drivetrain
     private final GenericEntry driveSpeed = this.ControlTab
@@ -79,16 +80,9 @@ public class RobotContainer {
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
 
-    
-    private boolean reversedDrive = false;
-
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
         new CommandXboxController(OperatorConstants.kDriverControllerPort);
-    
-    private final CommandXboxController m_reducedController = 
-        new CommandXboxController(OperatorConstants.kReducedControllerPort);
-
     
     //Constructors for Drive Modes
 
@@ -154,7 +148,6 @@ public class RobotContainer {
 
         // Configure the trigger bindings
         configureBindings();
-
         m_robotDrive.setDefaultCommand(ArcadeDriveConstructor());
     }
 
@@ -193,10 +186,6 @@ public class RobotContainer {
 
         //Configures emergency brake (b button)
         m_driverController.b().whileTrue(DisabledDriveConstructor());
-    }
-
-    private void configureShuffleboard() {
-
     }
 
     /**
