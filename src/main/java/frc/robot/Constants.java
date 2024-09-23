@@ -65,7 +65,7 @@ public final class Constants {
     public static class Electrical {
         public final double kCurrentLimit = 40; //Current limit in amperes
         public final double kCurrentThreshold = 60; //The threshold at which the current limit is activated
-        public final double kCurrentLimitTriggerTime = 
+        public final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated
     }
   }
   
