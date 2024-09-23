@@ -48,6 +48,13 @@ public final class Constants {
     public static final double kClutchTurn = 0.4; //Turn rate limiter for clutch
 
     public static final double kAccelerationLimiter = 0.00; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
+
+    public static class Electrical {
+        public static final boolean kCurrentLimitEnabled = true;
+        public static final double kCurrentLimit = 40; //Current limit in amperes
+        public static final double kCurrentThreshold = 60; //The threshold at which the current limit is activated
+        public static final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated
+    }
   }
 
   public static class ShooterConstants {
@@ -63,9 +70,7 @@ public final class Constants {
     public static final int kIndexerMotorID = 3; //Placeholder
 
     public static class Electrical {
-        public final double kCurrentLimit = 40; //Current limit in amperes
-        public final double kCurrentThreshold = 60; //The threshold at which the current limit is activated
-        public final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated
+        public static final double kCurrentLimit = 40; //Current limit in amperes
     }
   }
   

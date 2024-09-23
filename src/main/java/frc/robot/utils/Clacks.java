@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.utils;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
@@ -106,7 +106,7 @@ public class Clacks extends SubsystemBase {
             "GNU Douglas Adams",
             "GNU John Conway",
             "GNU Alan Turing",
-            "GNU Woodie Flowers"
+            "GNU Woodie Flowers",
         };
     
     public Clacks() {

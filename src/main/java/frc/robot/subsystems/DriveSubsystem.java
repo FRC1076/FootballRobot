@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
@@ -64,10 +65,21 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
         m_rightFollower.setNeutralMode(NeutralMode.Brake);
 
-        
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
 
+        SupplyCurrentLimitConfiguration currentLimitConfig = new SupplyCurrentLimitConfiguration(
+            DriveConstants.Electrical.kCurrentLimitEnabled,
+            DriveConstants.Electrical.kCurrentLimit,
+            DriveConstants.Electrical.kCurrentThreshold,
+            DriveConstants.Electrical.kCurrentLimitTriggerTime
+        );
+
+        m_leftLeader.configSupplyCurrentLimit(currentLimitConfig);
+        m_rightLeader.configSupplyCurrentLimit(currentLimitConfig);
+        m_leftFollower.configSupplyCurrentLimit(currentLimitConfig);
+        m_rightFollower.configSupplyCurrentLimit(currentLimitConfig);
+        
         m_rightLeader.setInverted(true);
 
         //Differential Drive

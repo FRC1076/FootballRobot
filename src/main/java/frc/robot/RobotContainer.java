@@ -5,9 +5,14 @@
 package frc.robot;
 
 import java.util.Map;
+import java.util.EnumSet;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -25,10 +30,10 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.shooter.Shoot;
-import frc.robot.subsystems.Clacks;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.Clacks;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,8 +49,15 @@ public class RobotContainer {
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
     private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
-    //Shuffleboard
+    //Shuffleboard & Networktables
     private final ShuffleboardTab ControlTab = Shuffleboard.getTab("Control");
+    private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
+    private final ComplexWidget driveCommand = this.ControlTab
+        .add("Drive Mode",driveModeChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withSize(2,1);
+    private StringSubscriber DMSub; //Could not be final. DO NOT CHANGE UNDER ANY CIRCUMSTANCES OTHER THAN IN CONFIGUREBINDINGS
+    private int DMValueListenerHandle; //Could not be final. DO NOT CHANGE UNDER ANY CIRCUMSTANCES OTHER THAN IN CONFIGUREBINDINGS
 
     //Controls Shooter Speed
     private final GenericEntry shooterSpeed = this.ControlTab
@@ -73,12 +85,6 @@ public class RobotContainer {
         .add("Drive Reversed",false)
         .withWidget(BuiltInWidgets.kToggleSwitch)
         .getEntry();
-
-    private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
-    private final ComplexWidget driveCommand = this.ControlTab
-        .add("Drive Mode (Press A to confirm change)",driveModeChooser)
-        .withWidget(BuiltInWidgets.kComboBoxChooser)
-        .withSize(2,1);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
@@ -122,16 +128,14 @@ public class RobotContainer {
             m_robotDrive);
     }
 
-    //Runnable for changing the Drive mode
-    private class changeDriveMode implements Runnable {
-        @Override
-        public void run(){
-            switch (driveModeChooser.getSelected()){
-                case "Arcade" -> CommandScheduler.getInstance().schedule(ArcadeDriveConstructor());
-                case "Clutch" -> CommandScheduler.getInstance().schedule(ClutchDriveConstructor());
-                case "Reduced" -> System.out.println("Reduced Drive is currently WIP. Please do not use it.");
-                case "Disabled" -> CommandScheduler.getInstance().schedule(DisabledDriveConstructor());
-            }
+    //Function for changing drive mode
+    private void changeDriveMode(){
+        //System.out.println("Changing Drive Mode"); //for debugging
+        switch (driveModeChooser.getSelected()){
+            case "Arcade" -> CommandScheduler.getInstance().schedule(ArcadeDriveConstructor());
+            case "Clutch" -> CommandScheduler.getInstance().schedule(ClutchDriveConstructor());
+            case "Reduced" -> System.out.println("Reduced Drive is currently WIP. Please do not use it.");
+            case "Disabled" -> CommandScheduler.getInstance().schedule(DisabledDriveConstructor());
         }
     }
 
@@ -169,7 +173,8 @@ public class RobotContainer {
                 m_ShooterSubsystem
             )
             .raceWith(DisabledDriveConstructor())
-        );
+        )
+        .negate().onTrue(new InstantCommand(() -> changeDriveMode()));
         
         //Configures Indexer Command
         m_driverController.leftTrigger(0.5).whileTrue(new StartEndCommand(
@@ -177,15 +182,28 @@ public class RobotContainer {
             () -> IndexMotor.stopMotor()
         ));
         
-        m_driverController.a().onTrue(new InstantCommand(new changeDriveMode()));
+        //m_driverController.a().onTrue(new InstantCommand(() -> changeDriveMode()));
 
         //Configures Clutch binding (LB + RB)
-        m_driverController.leftBumper()
-            .and(m_driverController.rightBumper())
-            .whileTrue(ClutchDriveConstructor());
+        m_driverController.leftBumper().and(m_driverController.rightBumper())
+            .whileTrue(ClutchDriveConstructor())
+            .negate().onTrue(new InstantCommand(() -> changeDriveMode()));
 
         //Configures emergency brake (b button)
-        m_driverController.b().whileTrue(DisabledDriveConstructor());
+        m_driverController.b()
+            .whileTrue(DisabledDriveConstructor())
+            .negate().onTrue(new InstantCommand(() -> changeDriveMode()));
+
+        //Configures Drive Mode listener (Not technically a binding, but serves the same purpose)
+        NetworkTableInstance NTInst = NetworkTableInstance.getDefault();
+        NetworkTable DMTable = NTInst.getTable("/Shuffleboard/Control/Drive Mode");
+        DMSub = DMTable.getStringTopic("active").subscribe("Arcade");
+        DMValueListenerHandle = NTInst.addListener(
+            DMSub,
+            EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+            event -> changeDriveMode()
+        );
+
     }
 
     /**

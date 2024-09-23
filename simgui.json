@@ -106,9 +106,16 @@
         }
       },
       "Shuffleboard": {
+        "Control": {
+          "Drive Mode": {
+            "open": true
+          },
+          "open": true
+        },
         "SmartDashboard": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   },
