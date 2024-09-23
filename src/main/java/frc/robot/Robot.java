@@ -25,6 +25,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Enable LiveWindow in test mode. This will help with diagnostics and troubleshooting
+    enableLiveWindowInTest(true);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();

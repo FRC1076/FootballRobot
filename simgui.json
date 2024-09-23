@@ -64,6 +64,19 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DriveSubsystem/Drivetrain": "DifferentialDrive",
+      "/LiveWindow/DriveSubsystem/Gyro": "Gyro",
+      "/LiveWindow/DriveSubsystem/Left Follower": "Motor Controller",
+      "/LiveWindow/DriveSubsystem/Right Follower": "Motor Controller",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/ShooterSubsystem/Left Shooter Motor": "Motor Controller",
+      "/LiveWindow/ShooterSubsystem/Right Shooter Motor": "Motor Controller",
+      "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PWMTalonSRX[3]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon SRX [2]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [3]": "Motor Controller",
       "/Shuffleboard/Control/Drive Mode": "String Chooser",
       "/Shuffleboard/Control/Drive Mode (Press A to confirm change)": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
@@ -119,7 +132,9 @@
       "Publishers": {
         "open": true
       }
-    },
-    "visible": true
+    }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

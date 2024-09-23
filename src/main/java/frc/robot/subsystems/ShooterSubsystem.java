@@ -2,18 +2,21 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import frc.robot.utils.CANSparkMaxSendable;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    public final CANSparkMax m_leftShooterMotor;
-    public final CANSparkMax m_rightShooterMotor;
+    public final CANSparkMaxSendable m_leftShooterMotor;
+    public final CANSparkMaxSendable m_rightShooterMotor;
 
     public ShooterSubsystem() {
-        m_leftShooterMotor = new CANSparkMax(ShooterConstants.kLeftShooterMotorID, CANSparkMax.MotorType.kBrushless);
-        m_rightShooterMotor = new CANSparkMax(ShooterConstants.kRightShooterMotorID, CANSparkMax.MotorType.kBrushless);
+        m_leftShooterMotor = new CANSparkMaxSendable(ShooterConstants.kLeftShooterMotorID, CANSparkMax.MotorType.kBrushless);
+        m_rightShooterMotor = new CANSparkMaxSendable(ShooterConstants.kRightShooterMotorID, CANSparkMax.MotorType.kBrushless);
         m_leftShooterMotor.setInverted(ShooterConstants.kLeftInverted);
         m_rightShooterMotor.setInverted(ShooterConstants.kRightInverted);
+        addChild("Left Shooter Motor",m_leftShooterMotor);
+        addChild("Right Shooter Motor",m_rightShooterMotor);
     }
     
     public void setShooterSpeed(double leftMotorSpeed, double rightMotorSpeed) {

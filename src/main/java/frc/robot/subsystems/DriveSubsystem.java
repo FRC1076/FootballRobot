@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
@@ -21,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -71,11 +68,15 @@ public class DriveSubsystem extends SubsystemBase {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
 
+        addChild("Left Leader",m_leftLeader);
+        addChild("Right Leader",m_rightLeader);
+
         m_rightLeader.setInverted(true);
 
         //Differential Drive
         m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
-
+        addChild("Drivetrain", m_differentialDrive);
+        
         //Encoders
         m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
         m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -89,6 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
         //Gyro
         m_gyro = new ADXRS450_Gyro();
         m_gyro.calibrate();
+        addChild("Gyro", m_gyro);
 
         //Odometry
         m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
