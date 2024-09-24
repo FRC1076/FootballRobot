@@ -13,7 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringSubscriber;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -141,7 +141,7 @@ public class RobotContainer {
 
     //Indexer motor
 
-    private final PWMTalonSRX IndexMotor = new PWMTalonSRX(ShooterConstants.kIndexerMotorID);
+    private final WPI_TalonSRX IndexMotor = new WPI_TalonSRX(ShooterConstants.kIndexerMotorID);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {

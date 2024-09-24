@@ -67,7 +67,7 @@ public final class Constants {
     public static final boolean kLeftInverted = true;
     public static final boolean kRightInverted = false;
 
-    public static final int kIndexerMotorID = 3; //Placeholder
+    public static final int kIndexerMotorID = 4;
 
     public static class Electrical {
         public static final double kCurrentLimit = 40; //Current limit in amperes
