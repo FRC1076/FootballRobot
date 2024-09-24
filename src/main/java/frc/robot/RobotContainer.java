@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import java.util.Map;
 import java.util.EnumSet;
+import java.util.Map;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -56,8 +56,8 @@ public class RobotContainer {
         .add("Drive Mode",driveModeChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
-    private StringSubscriber DMSub; //Could not be final. DO NOT CHANGE UNDER ANY CIRCUMSTANCES OTHER THAN IN CONFIGUREBINDINGS
-    private int DMValueListenerHandle; //Could not be final. DO NOT CHANGE UNDER ANY CIRCUMSTANCES OTHER THAN IN CONFIGUREBINDINGS
+    private StringSubscriber DMSub; //DO NOT CHANGE OUTSIDE CONFIGUREBINDINGS, CANNOT BE MADE FINAL BECAUSE REASONS
+    private int DMValueListenerHandle; //DO NOT CHANGE OUTSIDE CONFIGUREBINDINGS, CANNOT BE MADE FINAL BECAUSE REASONS
 
     //Controls Shooter Speed
     private final GenericEntry shooterSpeed = this.ControlTab
