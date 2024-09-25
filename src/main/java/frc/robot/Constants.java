@@ -73,5 +73,11 @@ public final class Constants {
         public static final double kCurrentLimit = 40; //Current limit in amperes
     }
   }
+
+  public static class BallisticsConstants {
+    public static final double kShooterAngle = 35; //The shooter's angle, in degrees PLACEHOLDER
+    public static final double kGravity = 9.81; //Gravitational acceleration, in m/s/s
+    public static final double kShooterHeight = 0.05; //The shooter's height above the ground, in meters PLACEHOLDER
+  }
   
 }
