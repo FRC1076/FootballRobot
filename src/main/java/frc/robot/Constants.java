@@ -51,15 +51,19 @@ public final class Constants {
 
     public static class Electrical {
         public static final boolean kCurrentLimitEnabled = true;
-        public static final double kCurrentLimit = 40; //Current limit in amperes
-        public static final double kCurrentThreshold = 60; //The threshold at which the current limit is activated
-        public static final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated
+        public static final double kCurrentLimit = 40; //Current limit in amperes PLACEHOLDER
+        public static final double kCurrentThreshold = 60; //The threshold at which the current limit is activated PLACEHOLDER
+        public static final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated PLACEHOLDER
+    }
+
+    public static class Physical {
+        public static final double kTrackWidth = 0.5; //Width of the drivetrain, in meters PLACEHOLDER
     }
   }
 
   public static class ShooterConstants {
-    public static final int kLeftShooterMotorID = 6; //Placeholder
-    public static final int kRightShooterMotorID = 1; //Placeholder
+    public static final int kLeftShooterMotorID = 6;
+    public static final int kRightShooterMotorID = 1;
 
     public static final double kLeftMotorSpeedScalar = 1.0;
     public static final double kRightMotorSpeedScalar = 0.5;
@@ -70,7 +74,7 @@ public final class Constants {
     public static final int kIndexerMotorID = 4;
 
     public static class Electrical {
-        public static final double kCurrentLimit = 40; //Current limit in amperes
+        public static final double kCurrentLimit = 40; //Current limit in amperes PLACEHOLDER
     }
   }
 
@@ -79,5 +83,14 @@ public final class Constants {
     public static final double kGravity = 9.81; //Gravitational acceleration, in m/s/s
     public static final double kShooterHeight = 0.05; //The shooter's height above the ground, in meters PLACEHOLDER
   }
-  
+
+  public static class VisionConstants {
+    public static final double kTargetAreaThreshold = 0.01;
+
+    public static class TransformConstants {
+        public static final double kTransformX = 0; //position of the limelight in meters relative to the center of the robot PLACEHOLDER
+        public static final double kTransformY = 0; //position of the limelight in meters relative to the center of the robot PLACEHOLDER
+        public static final double kTransformRot = 0; //position of the limelight in meters relative to the center of the robot PLACEHOLDER
+    }   
+  }
 }

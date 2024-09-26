@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -9,17 +10,27 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
+import java.util.Optional;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.utils.limelight.LimelightHelpers;
+import frc.robot.utils.limelight.LimelightPoseEstimator;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -38,13 +49,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final ADXRS450_Gyro m_gyro;
 
-    private final DifferentialDriveOdometry m_odometry;
+    private final DifferentialDrivePoseEstimator m_poseEstimator;
 
     private final EncoderSim m_leftEncoderSim;
     private final EncoderSim m_rightEncoderSim;
     private final ADXRS450_GyroSim m_gyroSim;
 
     private final Field2d m_field;
+
+    private final LimelightPoseEstimator m_limelightEstimator;
 
     public DriveSubsystem() {
 
@@ -102,7 +115,18 @@ public class DriveSubsystem extends SubsystemBase {
         addChild("Gyro", m_gyro);
 
         //Odometry
-        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+        m_poseEstimator = new DifferentialDrivePoseEstimator(
+            new DifferentialDriveKinematics(DriveConstants.Physical.kTrackWidth), 
+            m_gyro.getRotation2d(), 
+            m_leftEncoder.getDistance(), 
+            m_rightEncoder.getDistance(),
+            new Pose2d());
+        m_limelightEstimator = new LimelightPoseEstimator("limelight", new Transform2d(
+            new Translation2d(
+                VisionConstants.TransformConstants.kTransformX,
+                VisionConstants.TransformConstants.kTransformY
+            ),
+            new Rotation2d(VisionConstants.TransformConstants.kTransformRot)));
 
         //field2d
         m_field = new Field2d();
@@ -140,11 +164,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose){
         resetEncoders();
-        m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
+        m_poseEstimator.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
     }
 
     public Pose2d getPose(){
-        return m_odometry.getPoseMeters();
+        return m_poseEstimator.getEstimatedPosition();
     }
 
     public Rotation2d getRotation(){
@@ -154,8 +178,15 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         //this method will be called once per scheduler run
-        m_odometry.update(m_gyro.getRotation2d(),m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
-        m_field.setRobotPose(m_odometry.getPoseMeters());
+        m_poseEstimator.update(m_gyro.getRotation2d(),m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
+        Optional<LimelightHelpers.PoseEstimate> limelightPose = m_limelightEstimator.getPose();
+        if(limelightPose.isPresent()){
+            m_poseEstimator.addVisionMeasurement(limelightPose.get().pose, limelightPose.get().timestampSeconds);
+            System.out.println("TAG DISTANCE AT " + limelightPose.get().timestampSeconds + ":");
+            //System.out.println(LimelightHelpers.getJSONDump(Constants.VisionConstants.limelight1));
+            System.out.println(limelightPose.get().avgTagDist);
+        }
+        m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
     }
 
     @Override
