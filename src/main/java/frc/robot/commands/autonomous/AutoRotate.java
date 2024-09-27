@@ -27,7 +27,7 @@ public class AutoRotate extends Command {
      * @param processVariable the current measured rotation of Chuck in degrees
      */
     public AutoRotate(DoubleSupplier setpoint, DoubleSupplier processVariable, DriveSubsystem subsystem){
-        System.out.println("Constructing autorotate");
+        //System.out.println("Constructing autorotate");
         m_driveSubsystem = subsystem;
         m_setpoint = setpoint;
         m_processVariable = processVariable;
@@ -48,7 +48,7 @@ public class AutoRotate extends Command {
 
     @Override
     public void initialize() {
-        System.out.print("Initializing autorotate");
+        //System.out.print("Initializing autorotate");
         m_controller.reset();
     }
 
@@ -57,16 +57,12 @@ public class AutoRotate extends Command {
         double PIDOutput = m_controller.calculate(
             m_processVariable.getAsDouble(),
             m_setpoint.getAsDouble());
-        System.out.println("Output=" + PIDOutput);
-        System.out.println("PositionError=" + m_controller.getPositionError());
-        System.out.println("VelocityError=" + m_controller.getVelocityError());
-        System.out.println("Setpoint=" + m_controller.getSetpoint());
         m_driveSubsystem.arcadeDrive(0, PIDOutput);
     }
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("Ending AutoRotate");
+        //System.out.println("Ending AutoRotate");
     }
 
     @Override
