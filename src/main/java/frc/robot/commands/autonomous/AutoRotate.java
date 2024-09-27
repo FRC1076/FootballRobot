@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.Constants.AutonConstants.AutoOrientConstants;
+import frc.robot.Constants.AutonConstants.AutoRotationConstants;
 
 
 /**
@@ -26,19 +26,19 @@ public class AutoRotate extends Command {
      * @param setpoint the desired final rotation of Chuck in degrees
      * @param processVariable the current measured rotation of Chuck in degrees
      */
-    public AutoRotate(DriveSubsystem subsystem, DoubleSupplier setpoint, DoubleSupplier processVariable){
+    public AutoRotate(DoubleSupplier setpoint, DoubleSupplier processVariable, DriveSubsystem subsystem){
         m_driveSubsystem = subsystem;
         m_setpoint = setpoint;
         m_processVariable = processVariable;
         m_controller = new PIDController(
-            AutoOrientConstants.PIDCoefficients.kProportional, 
-            AutoOrientConstants.PIDCoefficients.kIntegral, 
-            AutoOrientConstants.PIDCoefficients.kDerivative);
+            AutoRotationConstants.PIDCoefficients.kProportional, 
+            AutoRotationConstants.PIDCoefficients.kIntegral, 
+            AutoRotationConstants.PIDCoefficients.kDerivative);
         m_controller.enableContinuousInput(-180, 180);
         m_controller.setIntegratorRange(
-            AutoOrientConstants.Integrator.kMin,
-            AutoOrientConstants.Integrator.kMax);
-        m_controller.setIZone(AutoOrientConstants.Integrator.kErrorThreshold);
+            AutoRotationConstants.Integrator.kMin,
+            AutoRotationConstants.Integrator.kMax);
+        m_controller.setIZone(AutoRotationConstants.Integrator.kErrorThreshold);
         addRequirements(subsystem);
     }
 

@@ -171,7 +171,11 @@ public class DriveSubsystem extends SubsystemBase {
         return m_poseEstimator.getEstimatedPosition();
     }
 
-    public Rotation2d getRotation(){
+    public double getAngle() {
+        return m_gyro.getAngle();
+    }
+    
+    public Rotation2d getRotation2d(){
         return m_gyro.getRotation2d();
     }
 

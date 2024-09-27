@@ -97,15 +97,15 @@ public final class Constants {
   public static class AutonConstants {
 
     /**
-     * PID Constants for the AutoOrient command
+     * PID Constants for Autonomous Rotation
      */
-    public static class AutoOrientConstants {
+    public static class AutoRotationConstants {
 
         //PID coefficients
         public static class PIDCoefficients {
-            public static final double kProportional = 0.7;
-            public static final double kIntegral = 0.1;
-            public static final double kDerivative = 0.3;
+            public static final double kProportional = 0.003;
+            public static final double kIntegral = 0.00001;
+            public static final double kDerivative = 0.00001;
         }
 
         //Target tolerance
