@@ -17,6 +17,7 @@ import java.util.Optional;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -47,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final Encoder m_leftEncoder;
     private final Encoder m_rightEncoder;
 
-    private final ADXRS450_Gyro m_gyro;
+    private final WPI_PigeonIMU m_gyro;
 
     private final DifferentialDrivePoseEstimator m_poseEstimator;
 
@@ -110,8 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightEncoder.setSamplesToAverage(DriveConstants.kEncoderSamples);
 
         //Gyro
-        m_gyro = new ADXRS450_Gyro();
-        m_gyro.calibrate();
+        m_gyro = new WPI_PigeonIMU(DriveConstants.kGyroPort);
         addChild("Gyro", m_gyro);
 
         //Odometry
@@ -135,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
         //Simulation
         m_leftEncoderSim = new EncoderSim(m_leftEncoder);
         m_rightEncoderSim = new EncoderSim(m_rightEncoder);
-        m_gyroSim = new ADXRS450_GyroSim(m_gyro);
+
         m_driveSim = new DifferentialDrivetrainSim(
             DCMotor.getNEO(2),
             7.29,
@@ -190,6 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
             //System.out.println(LimelightHelpers.getJSONDump(Constants.VisionConstants.limelight1));
             System.out.println(limelightPose.get().avgTagDist);
         }
+        //System.out.println(m_gyro.getAngle());
         m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
     }
 

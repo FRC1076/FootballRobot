@@ -147,6 +147,9 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_robotDrive.zeroHeading()
             ),
+            new InstantCommand(
+                () -> System.out.println("Turning 90 degrees")
+            ),
             new AutoRotate(
                 () -> 90.0,
                 m_robotDrive::getAngle,
