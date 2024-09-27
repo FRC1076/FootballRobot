@@ -64,7 +64,7 @@ public class LimelightPoseEstimator {
      */
     public Optional<PoseEstimate> getPose(){
         PoseEstimate limelightPose = getPoseRaw();
-        if (limelightPose.pose.equals(new Pose2d()) || LimelightHelpers.getTA(limelightName) < VisionConstants.kTargetAreaThreshold){
+        if (limelightPose == null || limelightPose.pose.equals(new Pose2d()) || LimelightHelpers.getTA(limelightName) < VisionConstants.kTargetAreaThreshold){
             return Optional.empty();
         } else {
             limelightPose.pose = limelightPose.pose.transformBy(offset);

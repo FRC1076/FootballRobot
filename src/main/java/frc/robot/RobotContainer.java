@@ -145,12 +145,18 @@ public class RobotContainer {
     private SequentialCommandGroup AutoRotate90DegreesTestFactory(){
         return new SequentialCommandGroup(
             new InstantCommand(
-                () -> {m_robotDrive.zeroHeading();}
+                () -> m_robotDrive.zeroHeading()
+            ),
+            new InstantCommand(
+                () -> System.out.println("Rotating 90 degrees")
             ),
             new AutoRotate(
                 () -> 90.0,
                 m_robotDrive::getAngle,
                 m_robotDrive
+            ),
+            new InstantCommand(
+                () -> changeDriveMode()
             )
         );
     }
@@ -233,7 +239,7 @@ public class RobotContainer {
             .negate().onTrue(new InstantCommand(() -> changeDriveMode()));
         
         //Configures autonomous mode switch (a button)
-        m_driverController.a().onTrue(new InstantCommand(() -> scheduleAutonomousCommand()).andThen(() -> changeDriveMode()));
+        m_driverController.a().onTrue(new InstantCommand(() -> scheduleAutonomousCommand()));
 
         //Configures Drive Mode listener (Not technically a binding, but serves the same purpose)
         NetworkTableInstance NTInst = NetworkTableInstance.getDefault();

@@ -174,7 +174,7 @@ public class DriveSubsystem extends SubsystemBase {
     public double getAngle() {
         return m_gyro.getAngle();
     }
-    
+
     public Rotation2d getRotation2d(){
         return m_gyro.getRotation2d();
     }
@@ -205,6 +205,6 @@ public class DriveSubsystem extends SubsystemBase {
         m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
         m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
         m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-        m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+        m_gyroSim.setAngle(m_driveSim.getHeading().getDegrees());
     }
 }
