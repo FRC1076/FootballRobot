@@ -54,7 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final EncoderSim m_leftEncoderSim;
     private final EncoderSim m_rightEncoderSim;
-    private final ADXRS450_GyroSim m_gyroSim;
 
     private final Field2d m_field;
 
@@ -206,6 +205,5 @@ public class DriveSubsystem extends SubsystemBase {
         m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
         m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
         m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-        m_gyroSim.setAngle(m_driveSim.getHeading().getDegrees());
     }
 }
