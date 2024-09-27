@@ -103,7 +103,7 @@ public final class Constants {
 
         //PID coefficients
         public static class PIDCoefficients {
-            public static final double kProportional = 0.006;
+            public static final double kProportional = 0.005;
             public static final double kIntegral = 0.0000;
             public static final double kDerivative = 0.00000;
         }

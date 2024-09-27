@@ -63,7 +63,7 @@ public class RobotContainer {
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
     private final ComplexWidget autonCommand = this.AutonTab
-        .add("Auton Chooser",autonChooser)
+        .add("Autonomous Chooser",autonChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2,1);
     private StringSubscriber DMSub; //DO NOT CHANGE OUTSIDE CONFIGUREBINDINGS, CANNOT BE MADE FINAL BECAUSE REASONS
