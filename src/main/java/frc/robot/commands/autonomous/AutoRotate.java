@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.AutonConstants.AutoRotationConstants;
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.networktables.GenericEntry;
 
 /**
  * A command that autonomously rotates Chuck towards an arbitrary setpoint using a PID controller
@@ -20,6 +21,13 @@ public class AutoRotate extends Command {
     private final DoubleSupplier m_processVariable;
     private final PIDController m_controller;
     private final boolean m_autoEnd; //Determines if the command ends automatically
+
+    private GenericEntry pErrorEntry;
+    private GenericEntry vErrorEntry;
+    private GenericEntry pVariableEntry;
+    private GenericEntry setpointEntry;
+    private GenericEntry pidOutputEntry;
+    
     /**
      * Constructs a new AutoRotate command
      * @param subsystem the drive subsystem
@@ -69,8 +77,13 @@ public class AutoRotate extends Command {
 
     @Override
     public void initialize() {
-        //System.out.print("Initializing autorotate");
+        System.out.print("DriveSubsystem: Initializing autorotate");
         m_controller.reset();
+        pErrorEntry = Shuffleboard.getTab("Autonomous").add("Autorotate: Position Error",m_controller.getPositionError()).getEntry();
+        vErrorEntry = Shuffleboard.getTab("Autonomous").add("Autorotate: Velocity Error",m_controller.getVelocityError()).getEntry();
+        pVariableEntry = Shuffleboard.getTab("Autonomous").add("Autorotate: Process Variable",m_processVariable.getAsDouble()).getEntry();
+        setpointEntry = Shuffleboard.getTab("Autonomous").add("Autorotate: Setpoint",m_setpoint.getAsDouble()).getEntry();
+        pidOutputEntry = Shuffleboard.getTab("Autonomous").add("Autorotate: PID Output",0).getEntry();
     }
 
     @Override
@@ -85,7 +98,12 @@ public class AutoRotate extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        //System.out.println("Ending AutoRotate");
+        System.out.println("DriveSubsystem: Ending AutoRotate");
+        pErrorEntry.close();
+        vErrorEntry.close();
+        pVariableEntry.close();
+        setpointEntry.close();
+        pidOutputEntry.close();
     }
 
     @Override
