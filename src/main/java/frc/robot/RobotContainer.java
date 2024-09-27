@@ -115,7 +115,7 @@ public class RobotContainer {
     }
 
     /**
-     * Factory for clutched drive
+     * Factory for clutch drive
      * @return a new ArcadeDrive() object, with all inputs reduced
      */
     private ArcadeDrive ClutchDriveFactory(){
