@@ -3,10 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -17,17 +15,15 @@ import java.util.Optional;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.utils.limelight.LimelightHelpers;
@@ -48,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final Encoder m_leftEncoder;
     private final Encoder m_rightEncoder;
 
-    private final WPI_PigeonIMU m_gyro;
+    private final Pigeon2 m_gyro;
 
     private final DifferentialDrivePoseEstimator m_poseEstimator;
 
@@ -110,7 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightEncoder.setSamplesToAverage(DriveConstants.kEncoderSamples);
 
         //Gyro
-        m_gyro = new WPI_PigeonIMU(DriveConstants.kGyroPort);
+        m_gyro = new Pigeon2(DriveConstants.kGyroPort);
         addChild("Gyro", m_gyro);
 
         //Odometry
