@@ -93,4 +93,33 @@ public final class Constants {
         public static final double kTransformRot = 0; //position of the limelight in meters relative to the center of the robot PLACEHOLDER
     }   
   }
+
+  public static class AutonConstants {
+
+    /**
+     * PID Constants for the AutoOrient command
+     */
+    public static class AutoOrientConstants {
+
+        //PID coefficients
+        public static class PIDCoefficients {
+            public static final double kProportional = 0.7;
+            public static final double kIntegral = 0.1;
+            public static final double kDerivative = 0.3;
+        }
+
+        //Target tolerance
+        public static class Tolerance {
+            public static final double kPosition = 1; //Position tolerance (in degrees) (NOTE: Position refers to the process variable)
+            public static final double kVelocity = 0; //Velocity tolerance (in degrees per second) (NOTE: Velocity refers to the derivative of the process variable)
+        }
+
+        //Integrator constants
+        public static class Integrator {
+            public static final double kErrorThreshold = 1; //Disables the integrator once the absolute value of the error crosses this threshold. Set to Double.POSITIVE_INFINITY to disable
+            public static final double kMin = -0.5; //Minimum value of the integrator term. if the integrator term is below this value, then it is no longer multiplied by the Integrator gain
+            public static final double kMax = 0.5; //Maximum value of the integrator term. if the integrator term is above this value, then it is no longer multiplied by the Integrator gain
+        }
+    }
+  }
 }
