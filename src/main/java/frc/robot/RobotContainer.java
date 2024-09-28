@@ -38,6 +38,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.Clacks;
+import frc.robot.utils.limelight.LimelightHelpers;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -148,7 +149,7 @@ public class RobotContainer {
                 () -> m_robotDrive.zeroHeading()
             ),
             new InstantCommand(
-                () -> System.out.println("Turning 90 degrees")
+                () -> System.out.println("DriveSubsystem: Turning 90 degrees")
             ),
             new AutoRotate(
                 () -> 90.0,
@@ -159,6 +160,24 @@ public class RobotContainer {
                 () -> changeDriveMode()
             )
         );
+    }
+
+    /** Factory for a command that autonomously rotates to an apriltag NOT TESTED*/
+    private SequentialCommandGroup RotateToAprilTagFactory(){
+        return new SequentialCommandGroup(
+            new InstantCommand(
+                () -> System.out.println("DriveSubsystem: Rotating to Apriltag")
+            ),
+            new AutoRotate(
+                () -> 0,
+                () -> LimelightHelpers.getTX("limelight"), 
+                m_robotDrive
+            ),
+            new InstantCommand(
+                () -> changeDriveMode()
+            )
+        );
+
     }
 
     //Function for changing drive mode
