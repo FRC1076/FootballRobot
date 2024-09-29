@@ -72,6 +72,7 @@
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon SRX [2]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [3]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [4]": "Motor Controller",
       "/Shuffleboard/Autonomous/Auton Chooser": "String Chooser",
       "/Shuffleboard/Autonomous/Autonomous Chooser": "String Chooser",
       "/Shuffleboard/Control/Drive Mode": "String Chooser",
@@ -79,6 +80,11 @@
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
+      "/Shuffleboard/Autonomous/Autonomous Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
