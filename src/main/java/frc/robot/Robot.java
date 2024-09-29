@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.Akit;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,7 +36,7 @@ public class Robot extends LoggedRobot {
     // Configure AdvantageKit
 
     // Record Metadata
-    
+
     /*
     if your IDE is giving you shit about BuildConstants, ignore it.
     The BuildConstants.java file is automatically generated at
@@ -69,6 +70,27 @@ public class Robot extends LoggedRobot {
         String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
         Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    }
+
+    // Akit.currentMode can be modified in the Constants.java file before compilation.
+    // Please make sure you have Akit.currentMode set to REAL before pushing any changes to Github
+    switch (Akit.currentMode){
+        case REAL -> {
+            // Running on a real robot, log to a USB stick ("/U/logs")
+            Logger.addDataReceiver(new WPILOGWriter());
+            Logger.addDataReceiver(new NT4Publisher());
+        }
+        case SIM -> {
+            // Running on a simulator, log to NetworkTables
+            Logger.addDataReceiver(new NT4Publisher());
+        }
+        case REPLAY -> {
+            // Replaying a log, set up replay source
+            setUseTiming(false); // Run as fast as possible
+            String logPath = LogFileUtil.findReplayLog();
+            Logger.setReplaySource(new WPILOGReader(logPath));
+            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        }
     }
 
     Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.

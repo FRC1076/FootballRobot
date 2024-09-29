@@ -28,7 +28,8 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.autonomous.AutoRotate;
@@ -100,7 +101,7 @@ public class RobotContainer {
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
-        new CommandXboxController(OperatorConstants.kDriverControllerPort);
+        new CommandXboxController(OIConstants.kDriverControllerPort);
     
     //Factories for Drive Modes
     //TODO: put the command factories in their own class
@@ -110,8 +111,8 @@ public class RobotContainer {
      */
     private ArcadeDrive ArcadeDriveFactory(){
         return new ArcadeDrive(
-            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> driveSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OIConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * MathUtil.applyDeadband(m_driverController.getRightX() * (OIConstants.kDriverInvertedTurnControls ? -1 : 1), OIConstants.kDriverControllerDeadband),
             "Drive Subsystem: Initializing Arcade Drive",
             m_robotDrive);
     }
@@ -122,8 +123,8 @@ public class RobotContainer {
      */
     private ArcadeDrive ClutchDriveFactory(){
         return new ArcadeDrive(
-            () -> driveSpeed.getDouble(1.0) * Constants.DriveConstants.kClutchSpeed * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
-            () -> turnSpeed.getDouble(1.0) * Constants.DriveConstants.kClutchTurn * MathUtil.applyDeadband(m_driverController.getRightX() * (OperatorConstants.kDriverInvertedTurnControls ? -1 : 1), OperatorConstants.kDriverControllerDeadband),
+            () -> driveSpeed.getDouble(1.0) * DriveConstants.kClutchSpeed * MathUtil.applyDeadband(m_driverController.getLeftY() * (driveReversed.getBoolean(false) ? -1 : 1), OIConstants.kDriverControllerDeadband),
+            () -> turnSpeed.getDouble(1.0) * DriveConstants.kClutchTurn * MathUtil.applyDeadband(m_driverController.getRightX() * (OIConstants.kDriverInvertedTurnControls ? -1 : 1), OIConstants.kDriverControllerDeadband),
             "Drive Subsystem: Initializing Clutch Drive",
             m_robotDrive);
     }
