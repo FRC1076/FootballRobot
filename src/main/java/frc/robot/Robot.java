@@ -62,16 +62,6 @@ public class Robot extends LoggedRobot {
         break;
     }
 
-    if (isReal()) {
-        Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    } else {
-        setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-        Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-    }
-
     // Akit.currentMode can be modified in the Constants.java file before compilation.
     // Please make sure you have Akit.currentMode set to REAL before pushing any changes to Github
     switch (Akit.currentMode){
