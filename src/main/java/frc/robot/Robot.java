@@ -33,7 +33,17 @@ public class Robot extends LoggedRobot {
   public void robotInit() {
 
     // Configure AdvantageKit
-    //Record Metadata
+
+    // Record Metadata
+    
+    /*
+    if your IDE is giving you shit about BuildConstants, ignore it.
+    The BuildConstants.java file is automatically generated at
+    compile time, so if you haven't deployed from this machine at least once,
+    the file won't exist yet. Building the code should fix it.
+    If building the code doesn't solve the issue, check if there's anything
+    wrong with the build.gradle file 
+    */
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
