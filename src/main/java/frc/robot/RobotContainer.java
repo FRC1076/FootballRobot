@@ -7,15 +7,14 @@ package frc.robot;
 import java.util.EnumSet;
 import java.util.Map;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringSubscriber;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,17 +27,19 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.autonomous.AutoRotate;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.shooter.Shoot;
-import frc.robot.commands.autonomous.AutoRotate;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.Clacks;
 import frc.robot.utils.limelight.LimelightHelpers;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -180,6 +181,28 @@ public class RobotContainer {
 
     }
 
+    /** Factory for a linear drivetrain characterization routine */
+    private SequentialCommandGroup linearCharacterizationRoutine(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> System.out.println("DriveSubsystem: Performing linear characterization routine")),
+            m_robotDrive.linearSysIdQuasistatic(Direction.kForward),
+            m_robotDrive.linearSysIdQuasistatic(Direction.kReverse),
+            m_robotDrive.linearSysIdDynamic(Direction.kForward),
+            m_robotDrive.linearSysIdDynamic(Direction.kReverse)
+        );
+    }
+
+    /** Factory for an angular drivetrain characterization routine */
+    private SequentialCommandGroup angularCharacterizationRoutine(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> System.out.println("DriveSubsystem: Performing angular characterization routine")),
+            m_robotDrive.angularSysIdQuasistatic(Direction.kForward),
+            m_robotDrive.angularSysIdQuasistatic(Direction.kReverse),
+            m_robotDrive.angularSysIdDynamic(Direction.kForward),
+            m_robotDrive.angularSysIdDynamic(Direction.kReverse)
+        );
+    }
+
     //Function for changing drive mode
     private void changeDriveMode(){
         //System.out.println("Changing Drive Mode"); //for debugging
@@ -196,6 +219,8 @@ public class RobotContainer {
         switch (autonChooser.getSelected()){
             case "Disabled" -> changeDriveMode();
             case "Rotate90Degrees" -> CommandScheduler.getInstance().schedule(AutoRotate90DegreesTestFactory());
+            case "Drivetrain Characterization Routine (Linear)" -> CommandScheduler.getInstance().schedule(linearCharacterizationRoutine());
+            case "Drivetrain Characterization Routine (Angular)" -> CommandScheduler.getInstance().schedule(angularCharacterizationRoutine());
         }
     }
 
