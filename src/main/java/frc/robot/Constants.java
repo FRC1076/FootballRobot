@@ -16,16 +16,18 @@ public final class Constants {
 
     public static class Akit {
 
-        public static final Mode currentMode = Mode.REAL;
-
-        public static enum Mode {
-            /** Running on a real robot */
-            REAL,
-            /** Running on a simulator */
-            SIM,
-            /** Replaying from a log file */
-            REPLAY
-        }
+        /**
+         * Determines the mode that AdvantageKit will run in.
+         * <ul>
+         * <li>0 = Running on a real robot</li>
+         * <li>1 = Running on a simulator</li>
+         * <li>2 = Replaying from a log file</li>
+         * </ul>
+         * currentMode's value can be changed as needed in the Constants.java file
+         * before compile time. Please ensure that currentMode is set to 0 (real)
+         * before pushing any changes to github.
+         */
+        public static final int currentMode = 0;
     }
   public static class OIConstants {
     public static final int kDriverControllerPort = 0;
