@@ -5,7 +5,6 @@ package frc.robot.subsystems.drive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.DriveConstants;
 /**
  * This drive implementation is for Talon SRXs driving brushed motors (e.g. CIMS) with no encoders
@@ -19,14 +18,19 @@ public class DriveIOTalonSRX implements DriveIO {
 
     public DriveIOTalonSRX() {
         var config = new TalonSRXConfiguration();
-        config.peakCurrentLimit = 60;
-        config.peakCurrentDuration = 250;
-        config.continuousCurrentLimit = 40;
-        config.voltageCompSaturation = 10.0;
+        config.peakCurrentLimit = DriveConstants.Electrical.kPeakCurrentLimit;
+        config.peakCurrentDuration = DriveConstants.Electrical.kPeakCurrentDuration;
+        config.continuousCurrentLimit = DriveConstants.Electrical.kContinuousCurrentLimit;
+        config.voltageCompSaturation = DriveConstants.Electrical.kVoltageComp; //"Full output" will scale to 12 volts, regardless of actual battery voltage level
+        
         leftLeader.configAllSettings(config);
         leftFollower.configAllSettings(config);
         rightLeader.configAllSettings(config);
         rightFollower.configAllSettings(config);
+        leftLeader.enableVoltageCompensation(DriveConstants.Electrical.kVoltageCompEnabled);
+        leftFollower.enableVoltageCompensation(DriveConstants.Electrical.kVoltageCompEnabled);
+        rightLeader.enableVoltageCompensation(DriveConstants.Electrical.kVoltageCompEnabled);
+        rightFollower.enableVoltageCompensation(DriveConstants.Electrical.kVoltageCompEnabled);
 
         leftFollower.follow(leftLeader);
         rightFollower.follow(rightLeader);

@@ -40,6 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final WPI_TalonSRX m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);;
     private final WPI_TalonSRX m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
     private final WPI_TalonSRX m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
+    private final DriveIO io;
 
     private final DifferentialDrive m_differentialDrive;
     private final DifferentialDrivetrainSim m_driveSim;

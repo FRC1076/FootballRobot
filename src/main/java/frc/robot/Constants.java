@@ -66,12 +66,11 @@ public final class Constants {
     public static final double kAccelerationLimiter = 0.00; //Acceleration limiter, sets the time from neutral to full power, measured in seconds
 
     public static class Electrical {
-        public static final boolean kCurrentLimitEnabled = true;
-        public static final double kCurrentLimit = 40; //Current limit in amperes PLACEHOLDER
-        public static final double kCurrentThreshold = 60; //The threshold at which the current limit is activated PLACEHOLDER
-        public static final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated PLACEHOLDER
-        public static final boolean kVoltageCompEnabled = true;
-        public static final double kVoltageComp = 12; //Voltage compensation
+        public static final int kContinuousCurrentLimit = 40; //Current limit in amperes PLACEHOLDER
+        public static final int kPeakCurrentLimit = 60; //The threshold at which the current limit is activated PLACEHOLDER
+        public static final int kPeakCurrentDuration = 250; //The time in milliseconds that the current needs to be over the threshold before the limiter is activated PLACEHOLDER
+        public static final boolean kVoltageCompEnabled = true; // whether or not voltage compensation is activated
+        public static final double kVoltageComp = 12.0; // Voltage compensation
     }
 
     public static class Physical {
