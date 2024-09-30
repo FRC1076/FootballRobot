@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.EnumSet;
 import java.util.Map;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.math.MathUtil;
@@ -38,6 +40,7 @@ import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveIOTalonSRX;
 import frc.robot.utils.Clacks;
 import frc.robot.utils.limelight.LimelightHelpers;
 
@@ -59,7 +62,7 @@ public class RobotContainer {
     //Shuffleboard & Networktables
     private final ShuffleboardTab ControlTab = Shuffleboard.getTab("Control");
     private final ShuffleboardTab AutonTab = Shuffleboard.getTab("Autonomous");
-    private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
+    private final SendableChooser<String> driveModeChooser = new SendableChooser<String>();
     private final SendableChooser<String> autonChooser = new SendableChooser<>();
     private final ComplexWidget driveCommand = this.ControlTab
         .add("Drive Mode",driveModeChooser)
@@ -147,9 +150,6 @@ public class RobotContainer {
      */
     private SequentialCommandGroup AutoRotate90DegreesTestFactory(){
         return new SequentialCommandGroup(
-            new InstantCommand(
-                () -> m_robotDrive.zeroHeading()
-            ),
             new InstantCommand(
                 () -> System.out.println("DriveSubsystem: Turning 90 degrees")
             ),

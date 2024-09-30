@@ -3,7 +3,7 @@ package frc.robot.subsystems.drive;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
-
+import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,11 +12,8 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import static edu.wpi.first.units.Units.Volts;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,8 +31,6 @@ public class DriveSubsystem extends SubsystemBase {
     private final Encoder m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
     private final Encoder m_rightEncoder = new Encoder(DriveConstants.kRightFrontEncoderPort, DriveConstants.kRightBackEncoderPort, DriveConstants.kRightEncoderReversed);
 
-    private final ADXRS450_Gyro m_gyro;
-
     private final DifferentialDrivePoseEstimator m_poseEstimator;
 
     private final Field2d m_field;
@@ -46,7 +41,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SysIdRoutine m_linearSysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(
             null,null,null,
-            (state) -> Logger.recordOutput("DrivetrainLinearSysIdTestState", state.toString())
+            (state) -> Logger.recordOutput("Drive/LinearSysIdTestState", state.toString())
         ),
         new SysIdRoutine.Mechanism(
             (voltage) -> driveVolts(voltage.in(Volts),voltage.in(Volts)),
@@ -58,7 +53,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SysIdRoutine m_angularSysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(
             null,null,null,
-            (state) -> Logger.recordOutput("DrivetrainAngularSysIdTestState", state.toString())
+            (state) -> Logger.recordOutput("Drive/AngularSysIdTestState", state.toString())
         ),
         new SysIdRoutine.Mechanism(
             (voltage) -> driveVolts(voltage.in(Volts),-voltage.in(Volts)),
@@ -79,15 +74,10 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightEncoder.setMinRate(DriveConstants.kEncoderMinRate);
         m_rightEncoder.setSamplesToAverage(DriveConstants.kEncoderSamples);
 
-        //Gyro
-        m_gyro = new ADXRS450_Gyro();
-        m_gyro.calibrate();
-        addChild("Gyro", m_gyro);
-
         //Odometry
         m_poseEstimator = new DifferentialDrivePoseEstimator(
             new DifferentialDriveKinematics(DriveConstants.Physical.kTrackWidth), 
-            m_gyro.getRotation2d(), 
+            inputs.gyroYaw, 
             m_leftEncoder.getDistance(), 
             m_rightEncoder.getDistance(),
             new Pose2d());
@@ -102,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_field = new Field2d();
         SmartDashboard.putData("Field",m_field);
     }
-    
+
     public void tankDrive(double moveSpeedLeft, double moveSpeedRight){
         System.out.println("Use arcade drive");
     }
@@ -121,25 +111,22 @@ public class DriveSubsystem extends SubsystemBase {
         m_rightEncoder.reset();
     }
 
-    public void zeroHeading(){
-        m_gyro.reset();
-    }
-
     public void resetOdometry(Pose2d pose){
         resetEncoders();
-        m_poseEstimator.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
+        m_poseEstimator.resetPosition(inputs.gyroYaw, m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
     }
 
+    @AutoLogOutput(key = "Drive/Pose")
     public Pose2d getPose(){
         return m_poseEstimator.getEstimatedPosition();
     }
 
     public double getAngle() {
-        return m_gyro.getAngle();
+        return inputs.gyroYaw.getDegrees();
     }
 
     public Rotation2d getRotation2d(){
-        return m_gyro.getRotation2d();
+        return inputs.gyroYaw;
     }
 
     // System Identification routine factories
@@ -165,8 +152,8 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         //this method will be called once per scheduler run
         io.updateInputs(inputs);
-        Logger.processInputs("Drive",inputs)
-        m_poseEstimator.update(m_gyro.getRotation2d(),m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
+        Logger.processInputs("Drive",inputs);
+        m_poseEstimator.update(inputs.gyroYaw,m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
         Optional<LimelightHelpers.PoseEstimate> limelightPose = m_limelightEstimator.getPose();
         if(limelightPose.isPresent()){
             m_poseEstimator.addVisionMeasurement(limelightPose.get().pose, limelightPose.get().timestampSeconds);
