@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import java.util.Optional;
 
@@ -39,9 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final WPI_TalonSRX m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
     private final WPI_TalonSRX m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);;
     private final WPI_TalonSRX m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
-    private final WPI_TalonSRX m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);;
-    //private final MotorControllerGroup m_left;
-    //private final MotorControllerGroup m_right;
+    private final WPI_TalonSRX m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
 
     private final DifferentialDrive m_differentialDrive;
     private final DifferentialDrivetrainSim m_driveSim;

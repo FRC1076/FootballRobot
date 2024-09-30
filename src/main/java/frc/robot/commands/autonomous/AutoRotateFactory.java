@@ -1,7 +1,8 @@
 package frc.robot.commands.autonomous;
 
 import java.util.function.DoubleSupplier;
-import frc.robot.subsystems.DriveSubsystem;
+
+import frc.robot.subsystems.drive.DriveSubsystem;
 //Factory for autorotate commands
 public final class AutoRotateFactory {
 

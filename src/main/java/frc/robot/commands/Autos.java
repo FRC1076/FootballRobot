@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.commands.autonomous.AutoRotate;
-import frc.robot.subsystems.DriveSubsystem;
 
 
 /**

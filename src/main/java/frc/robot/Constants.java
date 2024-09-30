@@ -70,6 +70,8 @@ public final class Constants {
         public static final double kCurrentLimit = 40; //Current limit in amperes PLACEHOLDER
         public static final double kCurrentThreshold = 60; //The threshold at which the current limit is activated PLACEHOLDER
         public static final double kCurrentLimitTriggerTime = 0.5; //The time in seconds that the current needs to be over the threshold before the limiter is activated PLACEHOLDER
+        public static final boolean kVoltageCompEnabled = true;
+        public static final double kVoltageComp = 12; //Voltage compensation
     }
 
     public static class Physical {
