@@ -34,6 +34,7 @@ public class DriveIOTalonSRX implements DriveIO {
 
         leftFollower.follow(leftLeader);
         rightFollower.follow(rightLeader);
+        rightLeader.setInverted(true);
     }
 
     @Override

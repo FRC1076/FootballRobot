@@ -36,17 +36,10 @@ import frc.robot.utils.limelight.LimelightPoseEstimator;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private final WPI_TalonSRX m_leftLeader = new WPI_TalonSRX(DriveConstants.kLeftFrontMotorPort);
-    private final WPI_TalonSRX m_leftFollower = new WPI_TalonSRX(DriveConstants.kLeftBackMotorPort);;
-    private final WPI_TalonSRX m_rightLeader = new WPI_TalonSRX(DriveConstants.kRightFrontMotorPort);
-    private final WPI_TalonSRX m_rightFollower = new WPI_TalonSRX(DriveConstants.kRightBackMotorPort);
     private final DriveIO io;
-
-    private final DifferentialDrive m_differentialDrive;
-    private final DifferentialDrivetrainSim m_driveSim;
-
-    private final Encoder m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);;
-    private final Encoder m_rightEncoder = new Encoder(DriveConstants.kRightFrontEncoderPort, DriveConstants.kRightBackEncoderPort, DriveConstants.kRightEncoderReversed);;
+    private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
+    private final Encoder m_leftEncoder = new Encoder(DriveConstants.kLeftFrontEncoderPort,DriveConstants.kLeftBackEncoderPort,DriveConstants.kLeftEncoderReversed);
+    private final Encoder m_rightEncoder = new Encoder(DriveConstants.kRightFrontEncoderPort, DriveConstants.kRightBackEncoderPort, DriveConstants.kRightEncoderReversed);
 
     private final ADXRS450_Gyro m_gyro;
 
@@ -82,50 +75,14 @@ public class DriveSubsystem extends SubsystemBase {
             (state) -> Logger.recordOutput("DrivetrainAngularSysIdTestState", state.toString())
         ),
         new SysIdRoutine.Mechanism(
-            voltage -> {
-                m_leftLeader.setVoltage(voltage.in(Volts));
-                m_rightLeader.setVoltage(-voltage.in(Volts));
-            },
+            (voltage) -> driveVolts(voltage.in(Volts),-voltage.in(Volts)),
             null,
             this
         )
     );
 
-    public DriveSubsystem() {
-
-        //Motor Config
-        m_leftLeader.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
-        m_leftLeader.setNeutralMode(NeutralMode.Brake);
-
-        m_leftFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
-        m_leftFollower.setNeutralMode(NeutralMode.Brake);
-
-        m_rightLeader.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
-        m_rightLeader.setNeutralMode(NeutralMode.Brake);
-
-        m_rightFollower.configOpenloopRamp(DriveConstants.kAccelerationLimiter);
-        m_rightFollower.setNeutralMode(NeutralMode.Brake);
-
-        m_leftFollower.follow(m_leftLeader);
-        m_rightFollower.follow(m_rightLeader);
-
-        SupplyCurrentLimitConfiguration currentLimitConfig = new SupplyCurrentLimitConfiguration(
-            DriveConstants.Electrical.kCurrentLimitEnabled,
-            DriveConstants.Electrical.kCurrentLimit,
-            DriveConstants.Electrical.kCurrentThreshold,
-            DriveConstants.Electrical.kCurrentLimitTriggerTime
-        );
-
-        m_leftLeader.configSupplyCurrentLimit(currentLimitConfig);
-        m_rightLeader.configSupplyCurrentLimit(currentLimitConfig);
-        m_leftFollower.configSupplyCurrentLimit(currentLimitConfig);
-        m_rightFollower.configSupplyCurrentLimit(currentLimitConfig);
-        
-        m_rightLeader.setInverted(true);
-
-        //Differential Drive
-        m_differentialDrive = new DifferentialDrive(m_leftLeader,m_rightLeader);
-        addChild("Drivetrain", m_differentialDrive);
+    public DriveSubsystem(DriveIO io) {
+        this.io = io;
 
         // Config Encoders
         m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -159,27 +116,16 @@ public class DriveSubsystem extends SubsystemBase {
         m_field = new Field2d();
         SmartDashboard.putData("Field",m_field);
 
-        //Simulation
-        m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-        m_rightEncoderSim = new EncoderSim(m_rightEncoder);
-
-        m_gyroSim = new ADXRS450_GyroSim(m_gyro);
-
-        m_driveSim = new DifferentialDrivetrainSim(
-            DCMotor.getNEO(2),
-            7.29,
-            7.5,            60, 
-            Units.inchesToMeters(3), 
-            0.7112, 
-            null); //Placeholder values
-    }
-
     public void tankDrive(double moveSpeedLeft, double moveSpeedRight){
         m_differentialDrive.tankDrive(moveSpeedLeft,moveSpeedRight);
     }
 
     public void arcadeDrive(double moveSpeed, double turnSpeed){
         m_differentialDrive.arcadeDrive(moveSpeed, turnSpeed);
+    }
+
+    public void driveVolts(double leftVolts, double rightVolts){
+        io.setVoltage(leftVolts,rightVolts);
     }
 
     public void resetEncoders(){
@@ -230,6 +176,8 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         //this method will be called once per scheduler run
+        io.updateInputs(inputs);
+        Logger.processInputs("Drive",inputs)
         m_poseEstimator.update(m_gyro.getRotation2d(),m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
         Optional<LimelightHelpers.PoseEstimate> limelightPose = m_limelightEstimator.getPose();
         if(limelightPose.isPresent()){
@@ -240,20 +188,5 @@ public class DriveSubsystem extends SubsystemBase {
         }
         //System.out.println(m_gyro.getAngle());
         m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-    }
-
-    @Override
-    public void simulationPeriodic(){
-        m_driveSim.setInputs(m_leftLeader.get() * RobotController.getInputVoltage(), 
-                            m_rightLeader.get() * RobotController.getInputVoltage());
-        
-
-        m_driveSim.update(0.02);
-
-        m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-        m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-        m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-        m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-        m_gyroSim.setAngle(m_driveSim.getHeading().getDegrees());
     }
 }
