@@ -165,7 +165,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         //this method will be called once per scheduler run
         io.updateInputs(inputs);
-        Logger.processInputs("Drive",inputs)
+        Logger.processInputs("Drive",inputs);
         m_poseEstimator.update(m_gyro.getRotation2d(),m_leftEncoder.getDistance(),m_rightEncoder.getDistance());
         Optional<LimelightHelpers.PoseEstimate> limelightPose = m_limelightEstimator.getPose();
         if(limelightPose.isPresent()){
