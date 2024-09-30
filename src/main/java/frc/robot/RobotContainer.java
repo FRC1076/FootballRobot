@@ -53,7 +53,7 @@ public class RobotContainer {
 
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    private final DriveSubsystem m_robotDrive = new DriveSubsystem(new DriveIOTalonSRX());
     private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
     //Shuffleboard & Networktables

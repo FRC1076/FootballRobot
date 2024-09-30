@@ -4,9 +4,6 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,15 +11,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,10 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final DifferentialDrivePoseEstimator m_poseEstimator;
 
-    private final EncoderSim m_leftEncoderSim;
-    private final EncoderSim m_rightEncoderSim;
-    private final ADXRS450_GyroSim m_gyroSim;
-
     private final Field2d m_field;
 
     private final LimelightPoseEstimator m_limelightEstimator;
@@ -60,10 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
             (state) -> Logger.recordOutput("DrivetrainLinearSysIdTestState", state.toString())
         ),
         new SysIdRoutine.Mechanism(
-            voltage -> {
-                m_leftLeader.setVoltage(voltage.in(Volts));
-                m_rightLeader.setVoltage(voltage.in(Volts));
-            },
+            (voltage) -> driveVolts(voltage.in(Volts),voltage.in(Volts)),
             null,
             this
         )
@@ -115,13 +101,15 @@ public class DriveSubsystem extends SubsystemBase {
         //field2d
         m_field = new Field2d();
         SmartDashboard.putData("Field",m_field);
-
+    }
+    
     public void tankDrive(double moveSpeedLeft, double moveSpeedRight){
-        m_differentialDrive.tankDrive(moveSpeedLeft,moveSpeedRight);
+        System.out.println("Use arcade drive");
     }
 
     public void arcadeDrive(double moveSpeed, double turnSpeed){
-        m_differentialDrive.arcadeDrive(moveSpeed, turnSpeed);
+        var speeds = DifferentialDrive.arcadeDriveIK(moveSpeed, turnSpeed, true);
+        io.setVoltage(speeds.left * 12.0, speeds.right * 12.0);
     }
 
     public void driveVolts(double leftVolts, double rightVolts){
