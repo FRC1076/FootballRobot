@@ -2,12 +2,11 @@
 
 package frc.robot.subsystems.drive;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.Constants.DriveConstants;
 /**
  * This drive implementation is for Talon SRXs driving brushed motors (e.g. CIMS) with no encoders.
@@ -40,6 +39,7 @@ public class DriveIOTalonSRX implements DriveIO {
         rightLeader.setInverted(true);
 
         gyro.calibrate();
+        System.out.println("Gyro Calibrated");
     }
 
     @Override
@@ -49,6 +49,7 @@ public class DriveIOTalonSRX implements DriveIO {
         inputs.rightAppliedVolts = rightLeader.getMotorOutputVoltage();
         inputs.rightCurrentAmps = new double[] {rightLeader.getSupplyCurrent(), rightFollower.getSupplyCurrent()};
         inputs.gyroYaw = gyro.getRotation2d();
+        inputs.gyroRate = gyro.getRate();
     }
 
     @Override

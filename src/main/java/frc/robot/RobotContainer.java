@@ -220,6 +220,7 @@ public class RobotContainer {
         switch (autonChooser.getSelected()){
             case "Disabled" -> changeDriveMode();
             case "Rotate90Degrees" -> CommandScheduler.getInstance().schedule(AutoRotate90DegreesTestFactory());
+            case "RotateToAprilTag" -> CommandScheduler.getInstance().schedule(RotateToAprilTagFactory());
             case "linearSysId" -> CommandScheduler.getInstance().schedule(linearCharacterizationRoutine());
             case "angularSysId" -> CommandScheduler.getInstance().schedule(angularCharacterizationRoutine());
         }
@@ -238,6 +239,7 @@ public class RobotContainer {
 
         autonChooser.setDefaultOption("Autonomous Disabled","Disabled");
         autonChooser.addOption("AutoRotate Test: Rotate 90 Degrees","Rotate90Degrees");
+        autonChooser.addOption("Rotate to AprilTag", "RotateToAprilTag");
         autonChooser.addOption("Drivetrain Characterization Routine (Linear)", "linearSysId");
         autonChooser.addOption("Drivetrain Characterization Routine (Angular)", "angularSysId");
 

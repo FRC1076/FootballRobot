@@ -1,8 +1,9 @@
 
 package frc.robot.subsystems.drive;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 // IO class that is logged by AdvantageKit
 public interface DriveIO {
   @AutoLog
@@ -18,6 +19,7 @@ public interface DriveIO {
     public double[] rightCurrentAmps = new double[] {};
 
     public Rotation2d gyroYaw = new Rotation2d();
+    public double gyroRate = 0.0;
   }
 
   /** Updates the set of loggable inputs. */
