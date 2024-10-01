@@ -2,8 +2,10 @@ package frc.robot.subsystems.mecanum;
 
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
-public class mecanumDrive {
+public class mecanumDrive extends SubsystemBase{
     private final mecanumDriveIO io;
     private final mecanumDriveIOInputsAutoLogged inputs = new mecanumDriveIOInputsAutoLogged();
 

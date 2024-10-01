@@ -81,6 +81,7 @@ public class AutoRotate extends Command {
         m_driveSubsystem.arcadeDrive(0, PIDOutput);
         System.out.println(m_controller.getPositionError());
         System.out.println(m_processVariable.getAsDouble());
+        System.out.println(PIDOutput);
     }
 
     @Override
