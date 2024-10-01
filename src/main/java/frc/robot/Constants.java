@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -75,6 +77,13 @@ public final class Constants {
 
     public static class Physical {
         public static final double kTrackWidth = 0.5; //Width of the drivetrain, in meters PLACEHOLDER
+        public static final double kWheelBase = 0.5; //Length from front wheel to back wheel, in meters PLACEHOLDER
+        public static final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2), // Front Left Wheel
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front Right Wheel
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2), // Rear Left Wheel
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2) //Rear Right Wheel
+        );
     }
   }
 
