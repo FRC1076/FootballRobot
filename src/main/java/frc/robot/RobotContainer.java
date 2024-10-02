@@ -149,12 +149,13 @@ public class RobotContainer {
      * @return a new command, which will sequentially reset the gyroscope and then tell chuck to autonomously rotate 90 degrees
      */
     private SequentialCommandGroup AutoRotate90DegreesTestFactory(){
+        double setpoint = m_robotDrive.getAngle() + 90.0;
         return new SequentialCommandGroup(
             new InstantCommand(
                 () -> System.out.println("DriveSubsystem: Turning 90 degrees")
             ),
             new AutoRotate(
-                () -> 90.0,
+                () -> setpoint,
                 m_robotDrive::getAngle,
                 m_robotDrive
             ),
@@ -166,13 +167,14 @@ public class RobotContainer {
 
     /** Factory for a command that autonomously rotates to an apriltag NOT TESTED*/
     private SequentialCommandGroup RotateToAprilTagFactory(){
+        double setpoint = m_robotDrive.getAngle() - LimelightHelpers.getTX("limelight");
         return new SequentialCommandGroup(
             new InstantCommand(
                 () -> System.out.println("DriveSubsystem: Rotating to Apriltag")
             ),
             new AutoRotate(
-                () -> 0,
-                () -> LimelightHelpers.getTX("limelight"), 
+                () -> setpoint,
+                () -> m_robotDrive.getAngle(), 
                 m_robotDrive
             ),
             new InstantCommand(

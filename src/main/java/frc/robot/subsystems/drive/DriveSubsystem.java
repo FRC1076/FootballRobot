@@ -95,6 +95,12 @@ public class DriveSubsystem extends SubsystemBase {
         io.setVoltage(speeds.left * 12.0, speeds.right * 12.0);
     }
 
+    /** Arcade drive, with disabled square inputs */
+    public void arcadeDriveNoSquare(double moveSpeed, double turnSpeed){
+        var speeds = DifferentialDrive.arcadeDriveIK(moveSpeed, turnSpeed, false);
+        io.setVoltage(speeds.left * 12.0, speeds.right * 12.0);
+    }
+
     public void driveVolts(double leftVolts, double rightVolts){
         io.setVoltage(leftVolts,rightVolts);
     }

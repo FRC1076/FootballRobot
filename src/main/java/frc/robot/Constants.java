@@ -123,8 +123,8 @@ public final class Constants {
 
         //PID coefficients
         public static class PIDCoefficients {
-            public static final double kProportional = 0.007;
-            public static final double kIntegral = 0.0000;
+            public static final double kProportional = 0.008;
+            public static final double kIntegral = 0.002;
             public static final double kDerivative = 0.00000;
         }
 
@@ -136,9 +136,9 @@ public final class Constants {
 
         //Integrator constants
         public static class Integrator {
-            public static final double kErrorThreshold = 1; //Disables the integrator once the absolute value of the error crosses this threshold. Set to Double.POSITIVE_INFINITY to disable
-            public static final double kMin = -0.5; //Minimum value of the integrator term. if the integrator term is below this value, then it is no longer multiplied by the Integrator gain
-            public static final double kMax = 0.5; //Maximum value of the integrator term. if the integrator term is above this value, then it is no longer multiplied by the Integrator gain
+            public static final double kErrorThreshold = 20; //Disables the integrator once the absolute value of the error crosses this threshold. Set to Double.POSITIVE_INFINITY to disable
+            public static final double kMin = -10; //Minimum value of the integrator term. if the integrator term is below this value, then it is no longer multiplied by the Integrator gain
+            public static final double kMax = 10; //Maximum value of the integrator term. if the integrator term is above this value, then it is no longer multiplied by the Integrator gain
         }
     }
   }
