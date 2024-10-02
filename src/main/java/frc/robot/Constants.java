@@ -123,15 +123,15 @@ public final class Constants {
 
         //PID coefficients
         public static class PIDCoefficients {
-            public static final double kProportional = 0.02;
+            public static final double kProportional = 0.007;
             public static final double kIntegral = 0.0000;
             public static final double kDerivative = 0.00000;
         }
 
         //Target tolerance
         public static class Tolerance {
-            public static final double kPosition = 5; //Position tolerance (in degrees) (NOTE: Position refers to the process variable)
-            public static final double kVelocity = 10; //Velocity tolerance (in degrees per second) (NOTE: Velocity refers to the derivative of the process variable)
+            public static final double kPosition = 1; //Position tolerance (in degrees) (NOTE: Position refers to the process variable)
+            public static final double kVelocity = 5; //Velocity tolerance (in degrees per second) (NOTE: Velocity refers to the derivative of the process variable)
         }
 
         //Integrator constants
