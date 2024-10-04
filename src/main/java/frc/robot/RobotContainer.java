@@ -184,6 +184,22 @@ public class RobotContainer {
 
     }
 
+    /** Factory for a command that autonomously rotates to an apriltag DOES NOT AUTOEND*/
+    private SequentialCommandGroup RotateToAprilTagFactoryContinuous(){
+        return new SequentialCommandGroup(
+            new InstantCommand(
+                () -> System.out.println("DriveSubsystem: Rotating to Apriltag (Continuous)")
+            ),
+            new AutoRotate(
+                () -> 0.0,
+                () -> LimelightHelpers.getTX("limelight"), 
+                m_robotDrive,
+                false
+            )
+        );
+
+    }
+
     /** Factory for a linear drivetrain characterization routine */
     private SequentialCommandGroup linearCharacterizationRoutine(){
         return new SequentialCommandGroup(
@@ -223,6 +239,7 @@ public class RobotContainer {
             case "Disabled" -> changeDriveMode();
             case "Rotate90Degrees" -> CommandScheduler.getInstance().schedule(AutoRotate90DegreesTestFactory());
             case "RotateToAprilTag" -> CommandScheduler.getInstance().schedule(RotateToAprilTagFactory());
+            case "RotateToAprilTagCont" -> CommandScheduler.getInstance().schedule(RotateToAprilTagFactoryContinuous());
             case "linearSysId" -> CommandScheduler.getInstance().schedule(linearCharacterizationRoutine());
             case "angularSysId" -> CommandScheduler.getInstance().schedule(angularCharacterizationRoutine());
         }
@@ -242,6 +259,7 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Autonomous Disabled","Disabled");
         autonChooser.addOption("AutoRotate Test: Rotate 90 Degrees","Rotate90Degrees");
         autonChooser.addOption("Rotate to AprilTag", "RotateToAprilTag");
+        autonChooser.addOption("Rotate to AprilTag (Continuous)", "RotateToAprilTagCont");
         autonChooser.addOption("Drivetrain Characterization Routine (Linear)", "linearSysId");
         autonChooser.addOption("Drivetrain Characterization Routine (Angular)", "angularSysId");
 
