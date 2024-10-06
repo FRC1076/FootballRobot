@@ -40,7 +40,7 @@ import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.shooter.ShooterIOCANSparkMax;
+import frc.robot.subsystems.shooter.ShooterIOSparkMax;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.drive.DriveIOTalonSRX;
 import frc.robot.utils.Clacks;
@@ -59,7 +59,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(new DriveIOTalonSRX());
-    private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(new ShooterIOCANSparkMax());
+    private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(new ShooterIOSparkMax());
 
     //Shuffleboard & Networktables
     private final ShuffleboardTab ControlTab = Shuffleboard.getTab("Control");
