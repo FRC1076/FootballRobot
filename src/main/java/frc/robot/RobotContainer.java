@@ -263,6 +263,8 @@ public class RobotContainer {
         autonChooser.addOption("Drivetrain Characterization Routine (Linear)", "linearSysId");
         autonChooser.addOption("Drivetrain Characterization Routine (Angular)", "angularSysId");
 
+        // Control Limelight lights
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
         // Configure the trigger bindings
         configureBindings();
         m_robotDrive.setDefaultCommand(ArcadeDriveFactory());

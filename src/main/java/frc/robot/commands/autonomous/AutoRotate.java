@@ -3,6 +3,7 @@ package frc.robot.commands.autonomous;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutonConstants.AutoRotationConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -71,6 +72,7 @@ public class AutoRotate extends Command {
     public void initialize() {
         System.out.print("DriveSubsystem: Initializing autorotate");
         m_controller.reset();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
     }
 
     @Override
@@ -87,6 +89,7 @@ public class AutoRotate extends Command {
     @Override
     public void end(boolean interrupted) {
         System.out.println("DriveSubsystem: Ending AutoRotate");
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
     }
 
     @Override
