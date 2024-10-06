@@ -1,13 +1,17 @@
 package frc.robot.commands.autonomous;
 
 
-import java.util.function.DoubleSupplier;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutonConstants.AutoRotationConstants;
-import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
 
 /** A command to autonomously rotate towards a target and shoot */
 public class RotateAndShoot extends Command {
@@ -18,7 +22,9 @@ public class RotateAndShoot extends Command {
     private final DoubleSupplier m_processVariable;
     private final BooleanSupplier m_acquiredTarget;
     private final BooleanSupplier m_shootingAuthorized;
+    private Boolean commandEnded = false;
     private final PIDController m_controller;
+    private final Timer m_timer = new Timer();
 
     /**
      * Constructs a new Autorotate command
@@ -58,5 +64,49 @@ public class RotateAndShoot extends Command {
         m_shootingAuthorized = shootingAuthorized;
         addRequirements(drive);
         addRequirements(shoot);
+    }
+
+    @Override
+    public void initialize() {
+        System.out.println("DriveSubsystem: Initializing RotateAndShoot");
+        System.out.println("ShooterSubsystem: Initializing RotateAndShoot");
+        System.out.println("DriveSubsystem: KILL ALL HUMANS");
+        System.out.println("ShooterSubsystem: KILL ALL HUMANS");
+        m_controller.reset();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    }
+
+    @Override
+    public void execute() {
+        double PIDOutput = m_controller.calculate(
+            m_processVariable.getAsDouble(),
+            m_setpoint.getAsDouble());
+        m_drive.arcadeDriveNoSquare(0, PIDOutput);
+        if (m_controller.atSetpoint() & m_acquiredTarget.getAsBoolean() & m_shootingAuthorized.getAsBoolean()) {
+            m_shoot.setShooterSpeed(
+                ShooterConstants.kLeftMotorSpeedScalar,
+                ShooterConstants.kRightMotorSpeedScalar
+            );
+            m_timer.start();
+            if (m_timer.advanceIfElapsed(1.0)) {
+                //TODO: activate indexer
+                commandEnded = true;
+            }
+        } else {
+            m_timer.stop();
+            m_timer.reset();
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("DriveSubsystem: Ending RotateAndShoot");
+        System.out.println("ShooterSubsystem: Ending RotateAndShoot");
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return commandEnded;
     }
 }

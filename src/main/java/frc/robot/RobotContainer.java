@@ -35,6 +35,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.autonomous.AutoRotate;
+import frc.robot.commands.autonomous.RotateAndShoot;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -197,7 +198,21 @@ public class RobotContainer {
                 false
             )
         );
+    }
 
+    private SequentialCommandGroup RotateAndShootFactory(){
+        return new SequentialCommandGroup(
+            new RotateAndShoot(
+                () -> 0.0, 
+                () -> LimelightHelpers.getTX("limelight"), 
+                () -> (LimelightHelpers.getTargetCount("limelight") > 0), 
+                m_driverController.y(), //Shooting authorized by holding down y button
+                m_robotDrive, 
+                m_ShooterSubsystem),
+            new InstantCommand(
+                () -> changeDriveMode()
+            )
+        );
     }
 
     /** Factory for a linear drivetrain characterization routine */
@@ -240,6 +255,7 @@ public class RobotContainer {
             case "Rotate90Degrees" -> CommandScheduler.getInstance().schedule(AutoRotate90DegreesTestFactory());
             case "RotateToAprilTag" -> CommandScheduler.getInstance().schedule(RotateToAprilTagFactory());
             case "RotateToAprilTagCont" -> CommandScheduler.getInstance().schedule(RotateToAprilTagFactoryContinuous());
+            case "RotateAndShoot" -> CommandScheduler.getInstance().schedule(RotateAndShootFactory());
             case "linearSysId" -> CommandScheduler.getInstance().schedule(linearCharacterizationRoutine());
             case "angularSysId" -> CommandScheduler.getInstance().schedule(angularCharacterizationRoutine());
         }
@@ -260,6 +276,7 @@ public class RobotContainer {
         autonChooser.addOption("AutoRotate Test: Rotate 90 Degrees","Rotate90Degrees");
         autonChooser.addOption("Rotate to AprilTag", "RotateToAprilTag");
         autonChooser.addOption("Rotate to AprilTag (Continuous)", "RotateToAprilTagCont");
+        autonChooser.addOption("Rotate and Shoot","RotateAndShoot");
         autonChooser.addOption("Drivetrain Characterization Routine (Linear)", "linearSysId");
         autonChooser.addOption("Drivetrain Characterization Routine (Angular)", "angularSysId");
 

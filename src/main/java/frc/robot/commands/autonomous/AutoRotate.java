@@ -49,7 +49,6 @@ public class AutoRotate extends Command {
     }
 
     public AutoRotate(DoubleSupplier setpoint, DoubleSupplier processVariable, DriveSubsystem subsystem) {
-        System.out.println("Starting Daemon Process: Self_Awareness");
         m_driveSubsystem = subsystem;
         m_setpoint = setpoint;
         m_processVariable = processVariable;
@@ -83,9 +82,11 @@ public class AutoRotate extends Command {
             m_processVariable.getAsDouble(),
             m_setpoint.getAsDouble());
         m_driveSubsystem.arcadeDriveNoSquare(0, PIDOutput);
+        /* 
         System.out.println(m_controller.getPositionError());
         System.out.println(m_processVariable.getAsDouble());
         System.out.println(PIDOutput);
+        */
     }
 
     @Override
