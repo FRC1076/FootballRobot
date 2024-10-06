@@ -89,7 +89,7 @@ public class AutoRotate extends Command {
     @Override
     public void end(boolean interrupted) {
         System.out.println("DriveSubsystem: Ending AutoRotate");
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     @Override
