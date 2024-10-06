@@ -91,6 +91,7 @@ public class AutoRotate extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        m_driveSubsystem.stopMotors();
         System.out.println("DriveSubsystem: Ending AutoRotate");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }

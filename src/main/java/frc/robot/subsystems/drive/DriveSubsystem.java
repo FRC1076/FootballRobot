@@ -1,9 +1,8 @@
 package frc.robot.subsystems.drive;
 import java.util.Optional;
 
-import org.littletonrobotics.junction.Logger;
-
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -108,6 +107,10 @@ public class DriveSubsystem extends SubsystemBase {
     public void resetEncoders(){
         m_leftEncoder.reset();
         m_rightEncoder.reset();
+    }
+
+    public void stopMotors(){
+        io.setVoltage(0, 0);
     }
 
     public void resetOdometry(Pose2d pose){

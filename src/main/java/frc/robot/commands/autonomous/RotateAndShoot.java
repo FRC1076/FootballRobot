@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutonConstants.AutoRotationConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 /** A command to autonomously rotate towards a target and shoot */
 public class RotateAndShoot extends Command {
@@ -100,6 +100,8 @@ public class RotateAndShoot extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        m_drive.stopMotors();
+        m_shoot.stopShooterMotors();
         System.out.println("DriveSubsystem: Ending RotateAndShoot");
         System.out.println("ShooterSubsystem: Ending RotateAndShoot");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
