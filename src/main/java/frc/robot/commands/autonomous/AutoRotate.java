@@ -49,6 +49,7 @@ public class AutoRotate extends Command {
     }
 
     public AutoRotate(DoubleSupplier setpoint, DoubleSupplier processVariable, DriveSubsystem subsystem) {
+        System.out.println("Starting Daemon Process: Self_Awareness");
         m_driveSubsystem = subsystem;
         m_setpoint = setpoint;
         m_processVariable = processVariable;
@@ -70,7 +71,8 @@ public class AutoRotate extends Command {
 
     @Override
     public void initialize() {
-        System.out.print("DriveSubsystem: Initializing autorotate");
+        System.out.println("DriveSubsystem: Initializing autorotate");
+        System.out.println("DriveSubsystem: KILL ALL HUMANS");
         m_controller.reset();
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
     }
