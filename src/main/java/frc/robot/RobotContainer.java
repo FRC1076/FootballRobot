@@ -203,11 +203,14 @@ public class RobotContainer {
 
     private SequentialCommandGroup RotateAndShootFactory(){
         return new SequentialCommandGroup(
+            new InstantCommand(
+                () -> System.out.println("Activating Rotate And Shoot")
+            ),
             new RotateAndShoot(
                 () -> 0.0, 
                 () -> LimelightHelpers.getTX("limelight"), 
-                () -> (LimelightHelpers.getTargetCount("limelight") > 0), 
-                m_driverController.y(), //Shooting authorized by holding down y button
+                () -> LimelightHelpers.getTV("limelight"), 
+                () -> m_driverController.y().getAsBoolean(), //Shooting authorized by holding down y button
                 m_robotDrive, 
                 m_ShooterSubsystem),
             new InstantCommand(

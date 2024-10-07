@@ -78,6 +78,10 @@ public class RotateAndShoot extends Command {
 
     @Override
     public void execute() {
+        //For debugging
+        System.out.println("At Setpoint: " + m_controller.atSetpoint());
+        System.out.println("Authorized: " + m_shootingAuthorized.getAsBoolean());
+        System.out.println("Target Acquired: " + m_acquiredTarget.getAsBoolean());
         double PIDOutput = m_controller.calculate(
             m_processVariable.getAsDouble(),
             m_setpoint.getAsDouble());
@@ -88,11 +92,12 @@ public class RotateAndShoot extends Command {
                 ShooterConstants.kRightMotorSpeedScalar
             );
             m_timer.start();
-            if (m_timer.advanceIfElapsed(1.0)) {
+            if (m_timer.advanceIfElapsed(2.0)) {
                 //TODO: activate indexer
                 commandEnded = true;
             }
         } else {
+            m_shoot.stopShooterMotors();
             m_timer.stop();
             m_timer.reset();
         }
