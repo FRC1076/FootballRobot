@@ -211,6 +211,13 @@ public class RobotContainer {
                 () -> LimelightHelpers.getTX("limelight"), 
                 () -> LimelightHelpers.getTV("limelight"), 
                 () -> m_driverController.y().getAsBoolean(), //Shooting authorized by holding down y button
+                /* Yes, I know that m_driverController.y() returns a Trigger, which is already an implementation of
+                doubleSupplier, and that encapsulating m_driverController.y() 
+                in a lambda expression is a pointless waste of resources that also harms readability.
+                But for some reason, just passing m_driverController.y()
+                immediately throws a fatal exception, while passing a lambda expression that calls m_driverController.y()
+                somehow fixes the issue. I have no idea why it works, it just does.
+                */
                 m_robotDrive, 
                 m_ShooterSubsystem),
             new InstantCommand(

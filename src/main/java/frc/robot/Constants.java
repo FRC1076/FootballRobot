@@ -130,8 +130,14 @@ public final class Constants {
 
         //Target tolerance
         public static class Tolerance {
-            public static final double kPosition = 3; //Position tolerance (in degrees) (NOTE: Position refers to the process variable)
+            public static final double kPosition = 0.5; //Position tolerance (in degrees) (NOTE: Position refers to the process variable)
             public static final double kVelocity = 5; //Velocity tolerance (in degrees per second) (NOTE: Velocity refers to the derivative of the process variable)
+        }
+
+        /** Target tolerance for continuous commands */
+        public static class ConTolerance {
+            public static final double kPosition = 10;
+            public static final double kVelocity = 5;
         }
 
         //Integrator constants
